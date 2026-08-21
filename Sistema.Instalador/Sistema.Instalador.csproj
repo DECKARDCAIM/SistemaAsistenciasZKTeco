@@ -63,8 +63,24 @@
   <ItemGroup>
     <None Include="app.manifest" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sistema.Presentacion\Sistema.Presentacion.csproj">
+      <Project>{ff6caa7c-9cdc-4851-b4a2-c9a6f7c0c94e}</Project>
+      <Name>Sistema.Presentacion</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sistema.ServicioWindows\Sistema.ServicioWindows.csproj">
+      <Project>{8d6b9e24-4f51-41e9-91a5-cb8e67a912d0}</Project>
+      <Name>Sistema.ServicioWindows</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetDir)*.*" "$(SolutionDir)Instalador\" 2&gt;nul</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(TargetDir)*.*" "$(SolutionDir)Instalador\" 2&gt;nul
+if not exist "$(SolutionDir)Instalador\ArchivosApp" mkdir "$(SolutionDir)Instalador\ArchivosApp"
+xcopy "$(SolutionDir)Sistema.Presentacion\bin\$(Platform)\$(Configuration)\*.*" "$(SolutionDir)Instalador\ArchivosApp\" /E /Y /I /Q 2&gt;nul
+copy /Y "$(SolutionDir)Sistema.ServicioWindows\bin\$(Platform)\$(Configuration)\Sistema.ServicioWindows.exe*" "$(SolutionDir)Instalador\ArchivosApp\" 2&gt;nul
+xcopy "$(SolutionDir)SDK\*.*" "$(SolutionDir)Instalador\ArchivosApp\" /Y /Q 2&gt;nul
+if exist "$(SolutionDir)Logotipos" xcopy "$(SolutionDir)Logotipos\*.*" "$(SolutionDir)Instalador\ArchivosApp\Logotipos\" /E /Y /I /Q 2&gt;nul
+if exist "$(SolutionDir)FormatosReportes" xcopy "$(SolutionDir)FormatosReportes\*.*" "$(SolutionDir)Instalador\ArchivosApp\FormatosReportes\" /E /Y /I /Q 2&gt;nul</PostBuildEvent>
   </PropertyGroup>
 </Project>

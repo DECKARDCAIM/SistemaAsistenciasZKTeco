@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Hospital de El Progreso - Formato Reporte de Asistencias Consolidado</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 25px; background: #f8fafc; color: #1e293b; }
+    .header-box { background: linear-gradient(135deg, #1e3a8a, #0284c7); color: white; padding: 22px 28px; border-radius: 10px; box-shadow: 0 4px 12px rgba(2,132,199,0.15); margin-bottom: 25px; }
+    .title { font-size: 22px; font-weight: bold; margin-bottom: 4px; }
+    .subtitle { font-size: 14px; opacity: 0.92; }
+    .stats-bar { display: flex; gap: 15px; margin-bottom: 20px; }
+    .stat-card { flex: 1; background: white; padding: 14px 18px; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
+    .stat-num { font-size: 20px; font-weight: bold; }
+    .stat-lbl { font-size: 12px; color: #64748b; margin-top: 2px; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid #cbd5e1; font-size: 12.5px; }
+    th { background: #0f172a; color: white; padding: 11px 12px; text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.5px; }
+    td { padding: 9px 12px; border-bottom: 1px solid #e2e8f0; }
+    tr:nth-child(even) { background: #f8fafc; }
+    .badge { font-weight: bold; padding: 3px 8px; border-radius: 4px; display: inline-block; font-size: 11px; }
+    .badge-ok { background: #dcfce7; color: #15803d; }
+    .badge-tardanza { background: #ffedd5; color: #c2410c; }
+    .badge-falta { background: #fee2e2; color: #b91c1c; }
+    .badge-almuerzo { background: #e0f2fe; color: #0369a1; }
+    .footer { margin-top: 25px; font-size: 12px; color: #64748b; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="header-box">
+    <div class="title">HOSPITAL DE EL PROGRESO</div>
+    <div class="subtitle">Ministerio de Salud Pública y Asistencia Social • Reporte Oficial de Control de Asistencias</div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-num" style="color: #2563eb;">227</div>
+      <div class="stat-lbl">Total Empleados</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" style="color: #16a34a;">208</div>
+      <div class="stat-lbl">Asistencias Hoy</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" style="color: #ea580c;">12</div>
+      <div class="stat-lbl">Tardanzas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" style="color: #dc2626;">7</div>
+      <div class="stat-lbl">Sin Marcación</div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Cód.</th>
+        <th>Empleado</th>
+        <th>Departamento</th>
+        <th>Turno</th>
+        <th>Fecha</th>
+        <th>🟢 Entrada</th>
+        <th>🍽️ Sal. Almuerzo</th>
+        <th>↩️ Reg. Almuerzo</th>
+        <th>🔴 Salida</th>
+        <th>⏱️ Horas</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>139</strong></td>
+        <td>Dr. Armando Canté</td>
+        <td>Admisión</td>
+        <td>Jornada de Oficina</td>
+        <td>2026-08-20</td>
+        <td>06:56:17</td>
+        <td>13:08:54</td>
+        <td>14:04:21</td>
+        <td>15:39:19</td>
+        <td>07:47</td>
+        <td><span class="badge badge-ok">Completo</span></td>
+      </tr>
+      <tr>
+        <td><strong>267</strong></td>
+        <td>Mirtala Priola Morales</td>
+        <td>Almacén</td>
+        <td>Jornada de Oficina</td>
+        <td>2026-08-20</td>
+        <td>08:02:25</td>
+        <td>13:29:36</td>
+        <td>--</td>
+        <td>--</td>
+        <td>--</td>
+        <td><span class="badge badge-almuerzo">Salida a Almuerzo</span></td>
+      </tr>
+      <tr>
+        <td><strong>134</strong></td>
+        <td>Nidia Gabriela Ayuso</td>
+        <td>Almacén</td>
+        <td>Jornada de Oficina</td>
+        <td>2026-08-20</td>
+        <td>07:59:09</td>
+        <td>--</td>
+        <td>--</td>
+        <td>--</td>
+        <td>--</td>
+        <td><span class="badge badge-almuerzo">Solo Entrada</span></td>
+      </tr>
+      <tr>
+        <td><strong>133</strong></td>
+        <td>Mirna Azucena Díaz</td>
+        <td>Admisión</td>
+        <td>Flexible</td>
+        <td>2026-08-20</td>
+        <td>--</td>
+        <td>--</td>
+        <td>--</td>
+        <td>--</td>
+        <td>--</td>
+        <td><span class="badge badge-falta">No Marcó</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    Sistema de Control de Asistencias ZKTeco • Hospital de El Progreso • Documento Oficial Generado Automáticamente
+  </div>
+</body>
+</html>

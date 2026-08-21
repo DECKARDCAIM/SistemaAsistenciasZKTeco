@@ -242,18 +242,58 @@ namespace Sistema.Instalador
 
         #region Proceso de Instalación
 
+        private string ObtenerDirectorioOrigen()
+        {
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            string[] candidatos = new string[]
+            {
+                Path.Combine(baseDir, "ArchivosApp"),
+                Path.Combine(baseDir, @"..\Sistema.Presentacion\bin\x86\Debug"),
+                Path.Combine(baseDir, @"..\Sistema.Presentacion\bin\x86\Release"),
+                Path.Combine(baseDir, @"..\..\Sistema.Presentacion\bin\x86\Debug"),
+                Path.Combine(baseDir, @"..\..\Sistema.Presentacion\bin\x86\Release"),
+                Path.Combine(baseDir, @"Sistema.Presentacion\bin\x86\Debug"),
+                baseDir
+            };
+
+            foreach (string dir in candidatos)
+            {
+                if (Directory.Exists(dir) && File.Exists(Path.Combine(dir, "Sistema.Presentacion.exe")))
+                {
+                    return Path.GetFullPath(dir);
+                }
+            }
+
+            // Buscar en carpeta superior si existe
+            try
+            {
+                string parentDir = Directory.GetParent(baseDir)?.FullName;
+                if (!string.IsNullOrEmpty(parentDir))
+                {
+                    string cand = Path.Combine(parentDir, @"Sistema.Presentacion\bin\x86\Debug");
+                    if (Directory.Exists(cand) && File.Exists(Path.Combine(cand, "Sistema.Presentacion.exe")))
+                        return Path.GetFullPath(cand);
+                }
+            }
+            catch { }
+
+            return baseDir;
+        }
+
         private async void EjecutarInstalacionAsync()
         {
             try
             {
                 await Task.Run(() =>
                 {
-                    string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                    string sourceDir = Path.Combine(baseDir, @"..\..\Sistema.Presentacion\bin\x86\Debug");
-                    if (!Directory.Exists(sourceDir)) sourceDir = Path.Combine(baseDir, @"..\..\Sistema.Presentacion\bin\x86\Release");
-                    if (!Directory.Exists(sourceDir)) sourceDir = baseDir; // Si corre instalado o standalone
+                    string sourceDir = ObtenerDirectorioOrigen();
 
-                    ReportarProgreso(5, "Creando directorio de instalación en: " + _rutaInstalacion);
+                    // Cerrar instancias previas si están abiertas
+                    CerrarProcesoSilencioso("Sistema.Presentacion");
+                    CerrarProcesoSilencioso("Sistema.ServicioWindows");
+                    CerrarProcesoSilencioso("Actualizador");
+
+                    ReportarProgreso(5, "Preparando directorio de instalación en: " + _rutaInstalacion);
                     if (!Directory.Exists(_rutaInstalacion))
                     {
                         Directory.CreateDirectory(_rutaInstalacion);
@@ -263,57 +303,72 @@ namespace Sistema.Instalador
                     ReportarProgreso(15, "Copiando ejecutables y librerías del sistema...");
                     if (Directory.Exists(sourceDir))
                     {
-                        CopiarArchivosConProgreso(sourceDir, _rutaInstalacion, 15, 60);
+                        CopiarArchivosConProgreso(sourceDir, _rutaInstalacion, 15, 65);
                     }
 
-                    // 2. Copiar SDK ZKTeco
-                    ReportarProgreso(65, "Copiando SDK nativo ZKTeco...");
-                    string sdkDir = Path.Combine(baseDir, @"..\..\SDK");
-                    if (!Directory.Exists(sdkDir)) sdkDir = Path.Combine(baseDir, "SDK");
-                    if (Directory.Exists(sdkDir))
+                    // Verificar que el ejecutable principal existe
+                    string targetExe = Path.Combine(_rutaInstalacion, "Sistema.Presentacion.exe");
+                    if (!File.Exists(targetExe))
                     {
-                        foreach (string file in Directory.GetFiles(sdkDir))
+                        throw new FileNotFoundException("No se encontró Sistema.Presentacion.exe en la carpeta origen: " + sourceDir);
+                    }
+
+                    // 2. Copiar SDK ZKTeco si falta en destino
+                    ReportarProgreso(68, "Verificando SDK nativo ZKTeco...");
+                    string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                    string[] sdkDirs = new string[]
+                    {
+                        Path.Combine(baseDir, "SDK"),
+                        Path.Combine(baseDir, @"..\SDK"),
+                        Path.Combine(baseDir, @"..\..\SDK")
+                    };
+
+                    foreach (string sdkDir in sdkDirs)
+                    {
+                        if (Directory.Exists(sdkDir))
                         {
-                            File.Copy(file, Path.Combine(_rutaInstalacion, Path.GetFileName(file)), true);
+                            foreach (string file in Directory.GetFiles(sdkDir))
+                            {
+                                string destFile = Path.Combine(_rutaInstalacion, Path.GetFileName(file));
+                                if (!File.Exists(destFile))
+                                    File.Copy(file, destFile, true);
+                            }
+                            break;
                         }
                     }
 
                     // 3. Copiar Recursos y Logotipos
-                    ReportarProgreso(75, "Copiando recursos institucionales y plantillas de reportes...");
-                    string logoDir = Path.Combine(baseDir, @"..\..\Logotipos");
-                    if (!Directory.Exists(logoDir)) logoDir = Path.Combine(baseDir, "Logotipos");
-                    if (Directory.Exists(logoDir))
+                    ReportarProgreso(75, "Copiando recursos institucionales y plantillas...");
+                    string[] logoDirs = new string[]
                     {
-                        string destLogo = Path.Combine(_rutaInstalacion, "Logotipos");
-                        if (!Directory.Exists(destLogo)) Directory.CreateDirectory(destLogo);
-                        foreach (string file in Directory.GetFiles(logoDir))
+                        Path.Combine(baseDir, "Logotipos"),
+                        Path.Combine(baseDir, @"..\Logotipos"),
+                        Path.Combine(baseDir, @"..\..\Logotipos")
+                    };
+                    foreach (string logoDir in logoDirs)
+                    {
+                        if (Directory.Exists(logoDir))
                         {
-                            File.Copy(file, Path.Combine(destLogo, Path.GetFileName(file)), true);
+                            string destLogo = Path.Combine(_rutaInstalacion, "Logotipos");
+                            if (!Directory.Exists(destLogo)) Directory.CreateDirectory(destLogo);
+                            foreach (string file in Directory.GetFiles(logoDir))
+                            {
+                                File.Copy(file, Path.Combine(destLogo, Path.GetFileName(file)), true);
+                            }
+                            break;
                         }
                     }
 
                     // 4. Registrar Librería COM zkemkeeper.dll en Windows
-                    ReportarProgreso(82, "Registrando librerías biométricas en Windows (regsvr32 zkemkeeper.dll)...");
+                    ReportarProgreso(82, "Registrando librerías biométricas COM en Windows...");
                     string zkemDll = Path.Combine(_rutaInstalacion, "zkemkeeper.dll");
                     if (File.Exists(zkemDll))
                     {
-                        try
-                        {
-                            var regProc = Process.Start(new ProcessStartInfo
-                            {
-                                FileName = "regsvr32.exe",
-                                Arguments = string.Format("/s \"{0}\"", zkemDll),
-                                CreateNoWindow = true,
-                                UseShellExecute = false
-                            });
-                            regProc.WaitForExit(5000);
-                        }
-                        catch { }
+                        EjecutarComando("regsvr32.exe", string.Format("/s \"{0}\"", zkemDll));
                     }
 
                     // 5. Crear Accesos Directos
-                    ReportarProgreso(90, "Creando accesos directos...");
-                    string targetExe = Path.Combine(_rutaInstalacion, "Sistema.Presentacion.exe");
+                    ReportarProgreso(88, "Creando accesos directos...");
 
                     if (chkEscritorio.Checked)
                     {
@@ -340,43 +395,65 @@ namespace Sistema.Instalador
                     // 6. Instalar Servicio de Windows 24/7 si se solicitó
                     if (chkServicioWindows.Checked)
                     {
-                        ReportarProgreso(95, "Instalando y activando Servicio de Windows 24/7 en segundo plano...");
+                        ReportarProgreso(93, "Configurando Servicio de Windows 24/7 en segundo plano...");
                         string serviceExe = Path.Combine(_rutaInstalacion, "Sistema.ServicioWindows.exe");
                         if (File.Exists(serviceExe))
                         {
-                            try
-                            {
-                                Process.Start(new ProcessStartInfo
-                                {
-                                    FileName = "sc.exe",
-                                    Arguments = string.Format("create ZKTecoHospitalElProgresoService binPath= \"{0}\" start= auto displayname= \"Servicio de Asistencias ZKTeco - Hospital de El Progreso\"", serviceExe),
-                                    CreateNoWindow = true,
-                                    UseShellExecute = false
-                                })?.WaitForExit(5000);
+                            // Detener y eliminar servicio previo si existía
+                            EjecutarComando("sc.exe", "stop ZKTecoHospitalElProgresoService");
+                            System.Threading.Thread.Sleep(1000);
+                            EjecutarComando("sc.exe", "delete ZKTecoHospitalElProgresoService");
+                            System.Threading.Thread.Sleep(1000);
 
-                                Process.Start(new ProcessStartInfo
-                                {
-                                    FileName = "sc.exe",
-                                    Arguments = "start ZKTecoHospitalElProgresoService",
-                                    CreateNoWindow = true,
-                                    UseShellExecute = false
-                                })?.WaitForExit(5000);
-                            }
-                            catch { }
+                            // Crear y arrancar servicio
+                            string createArgs = string.Format("create ZKTecoHospitalElProgresoService binPath= \"\\\"{0}\\\"\" start= auto DisplayName= \"Servicio de Asistencias ZKTeco - Hospital de El Progreso\"", serviceExe);
+                            EjecutarComando("sc.exe", createArgs);
+                            EjecutarComando("sc.exe", "description ZKTecoHospitalElProgresoService \"Monitorea y sincroniza 24/7 los relojes biometricos ZKTeco con PostgreSQL y Redis para el Hospital de El Progreso.\"");
+                            EjecutarComando("sc.exe", "start ZKTecoHospitalElProgresoService");
                         }
                     }
 
                     ReportarProgreso(100, "¡Instalación completada exitosamente!");
                 });
 
-                await Task.Delay(800);
+                await Task.Delay(600);
                 MostrarPaso(5);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ocurrió un error durante la instalación: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Ocurrió un error durante la instalación:\n\n" + ex.Message, "Error de Instalación", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 MostrarPaso(3);
             }
+        }
+
+        private void CerrarProcesoSilencioso(string processName)
+        {
+            try
+            {
+                foreach (var p in Process.GetProcessesByName(processName))
+                {
+                    p.Kill();
+                    p.WaitForExit(3000);
+                }
+            }
+            catch { }
+        }
+
+        private void EjecutarComando(string fileName, string args)
+        {
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = fileName,
+                    Arguments = args,
+                    CreateNoWindow = true,
+                    UseShellExecute = false
+                };
+                var proc = Process.Start(psi);
+                proc?.WaitForExit(10000);
+            }
+            catch { }
         }
 
         private void CopiarArchivosConProgreso(string source, string dest, int pctInicio, int pctFin)
@@ -397,7 +474,7 @@ namespace Sistema.Instalador
                 File.Copy(file, destFile, true);
                 contador++;
 
-                int pct = pctInicio + (int)((contador / (double)total) * (pctFin - pctInicio));
+                int pct = pctInicio + (int)((contador / (double)Math.Max(1, total)) * (pctFin - pctInicio));
                 ReportarProgreso(pct, "Copiando: " + Path.GetFileName(file));
             }
         }
@@ -417,11 +494,17 @@ namespace Sistema.Instalador
         {
             try
             {
+                if (File.Exists(rutaLnk))
+                {
+                    try { File.Delete(rutaLnk); } catch { }
+                }
+
                 Type shellType = Type.GetTypeFromProgID("WScript.Shell");
                 dynamic shell = Activator.CreateInstance(shellType);
                 dynamic shortcut = shell.CreateShortcut(rutaLnk);
                 shortcut.TargetPath = targetPath;
                 shortcut.WorkingDirectory = workingDir;
+                shortcut.IconLocation = targetPath + ",0";
                 shortcut.Description = descripcion;
                 shortcut.Save();
                 Marshal.FinalReleaseComObject(shortcut);
