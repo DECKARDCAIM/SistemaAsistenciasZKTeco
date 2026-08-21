@@ -366,67 +366,6 @@ namespace Sistema.Presentacion
             CargarListado();
         }
 
-        private void btnDescargarBiometrico_Click(object sender, EventArgs e)
-        {
-            List<Biometrico> biometricos = N_Biometrico.ListarActivos();
-            if (biometricos.Count == 0)
-            {
-                MessageBox.Show("No hay dispositivos biométricos activos registrados. Vaya al módulo de Biométricos para agregar uno.", 
-                                "Sin Dispositivos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            Biometrico bio = biometricos[0]; // Por defecto el primero o permitir elegir
-            if (biometricos.Count > 1)
-            {
-                // Si hay varios, se puede seleccionar
-                bio = SeleccionarBiometrico(biometricos);
-                if (bio == null) return;
-            }
-
-            Cursor = Cursors.WaitCursor;
-            try
-            {
-                using (var service = new ZKTecoService())
-                {
-                    string msgCon;
-                    if (service.Conectar(bio.DireccionIP, bio.Puerto, bio.CommKey, out msgCon))
-                    {
-                        string msgDescarga;
-                        List<Empleado> usuarios = service.DescargarUsuarios(out msgDescarga);
-                        service.Desconectar();
-
-                        if (usuarios.Count > 0)
-                        {
-                            int sincronizados = N_Empleado.SincronizarListaDesdeBiometrico(usuarios);
-                            N_Biometrico.ActualizarEstado(bio.IdBiometrico, "Conectado", DateTime.Now);
-                            MessageBox.Show($"{msgDescarga}\n\nSe insertaron/actualizaron {sincronizados} empleados en la Base de Datos.", 
-                                            "Descarga Exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            CargarListado();
-                        }
-                        else
-                        {
-                            MessageBox.Show("No se encontraron usuarios en el biométrico o hubo un error:\n" + msgDescarga, 
-                                            "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("No se pudo conectar al biométrico en " + bio.DireccionIP + ":\n" + msgCon, 
-                                        "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error en la sincronización: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                Cursor = Cursors.Default;
-            }
-        }
-
         private void btnSubirBiometrico_Click(object sender, EventArgs e)
         {
             if (dgvListado.CurrentRow == null)

@@ -197,30 +197,124 @@ namespace Sistema.Presentacion
             this.dgvListado.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvListado.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvListado.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvListado.Location = new System.Drawing.Point(12, 62);
+            this.dgvListado.Location = new System.Drawing.Point(12, 110);
             this.dgvListado.Name = "dgvListado";
             this.dgvListado.ReadOnly = true;
             this.dgvListado.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvListado.Size = new System.Drawing.Size(976, 495);
+            this.dgvListado.Size = new System.Drawing.Size(976, 537);
             this.dgvListado.TabIndex = 1;
             this.dgvListado.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListado_CellDoubleClick);
             // 
             // pnlAcciones
             // 
-            this.pnlAcciones.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(28)))), ((int)(((byte)(48)))));
-            this.pnlAcciones.Controls.Add(this.btnReiniciar);
-            this.pnlAcciones.Controls.Add(this.btnSubirTodosEmpleados);
+            this.pnlAcciones.BackColor = System.Drawing.Color.Transparent;
             this.pnlAcciones.Controls.Add(this.btnDescargarMarcaciones);
-            this.pnlAcciones.Controls.Add(this.btnDescargarUsuarios);
-            this.pnlAcciones.Controls.Add(this.btnSyncHora);
             this.pnlAcciones.Controls.Add(this.btnProbarConexion);
-            this.pnlAcciones.Controls.Add(this.lblAcciones);
-            this.pnlAcciones.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlAcciones.Location = new System.Drawing.Point(12, 557);
+            this.pnlAcciones.Controls.Add(this.btnSyncHora);
+            this.pnlAcciones.Controls.Add(this.btnDescargarUsuarios);
+            this.pnlAcciones.Controls.Add(this.btnSubirTodosEmpleados);
+            this.pnlAcciones.Controls.Add(this.btnReiniciar);
+            this.pnlAcciones.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlAcciones.Location = new System.Drawing.Point(12, 62);
             this.pnlAcciones.Name = "pnlAcciones";
-            this.pnlAcciones.Padding = new System.Windows.Forms.Padding(10);
-            this.pnlAcciones.Size = new System.Drawing.Size(976, 90);
+            this.pnlAcciones.Size = new System.Drawing.Size(976, 46);
             this.pnlAcciones.TabIndex = 2;
+            // 
+            // btnDescargarMarcaciones
+            // 
+            this.btnDescargarMarcaciones.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.btnDescargarMarcaciones.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDescargarMarcaciones.FlatAppearance.BorderSize = 0;
+            this.btnDescargarMarcaciones.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDescargarMarcaciones.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnDescargarMarcaciones.ForeColor = System.Drawing.Color.White;
+            this.btnDescargarMarcaciones.Location = new System.Drawing.Point(0, 6);
+            this.btnDescargarMarcaciones.Name = "btnDescargarMarcaciones";
+            this.btnDescargarMarcaciones.Size = new System.Drawing.Size(230, 32);
+            this.btnDescargarMarcaciones.TabIndex = 0;
+            this.btnDescargarMarcaciones.Text = "📥 Sincronizar Marcaciones (Todos)";
+            this.btnDescargarMarcaciones.UseVisualStyleBackColor = false;
+            this.btnDescargarMarcaciones.Click += new System.EventHandler(this.btnDescargarMarcaciones_Click);
+            // 
+            // btnProbarConexion
+            // 
+            this.btnProbarConexion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(132)))), ((int)(((byte)(199)))));
+            this.btnProbarConexion.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnProbarConexion.FlatAppearance.BorderSize = 0;
+            this.btnProbarConexion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnProbarConexion.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnProbarConexion.ForeColor = System.Drawing.Color.White;
+            this.btnProbarConexion.Location = new System.Drawing.Point(238, 6);
+            this.btnProbarConexion.Name = "btnProbarConexion";
+            this.btnProbarConexion.Size = new System.Drawing.Size(130, 32);
+            this.btnProbarConexion.TabIndex = 1;
+            this.btnProbarConexion.Text = "⚡ Probar Conexión";
+            this.btnProbarConexion.UseVisualStyleBackColor = false;
+            this.btnProbarConexion.Click += new System.EventHandler(this.btnProbarConexion_Click);
+            // 
+            // btnSyncHora
+            // 
+            this.btnSyncHora.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(13)))), ((int)(((byte)(148)))), ((int)(((byte)(136)))));
+            this.btnSyncHora.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSyncHora.FlatAppearance.BorderSize = 0;
+            this.btnSyncHora.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSyncHora.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnSyncHora.ForeColor = System.Drawing.Color.White;
+            this.btnSyncHora.Location = new System.Drawing.Point(376, 6);
+            this.btnSyncHora.Name = "btnSyncHora";
+            this.btnSyncHora.Size = new System.Drawing.Size(135, 32);
+            this.btnSyncHora.TabIndex = 2;
+            this.btnSyncHora.Text = "⏰ Sincronizar Hora";
+            this.btnSyncHora.UseVisualStyleBackColor = false;
+            this.btnSyncHora.Click += new System.EventHandler(this.btnSyncHora_Click);
+            // 
+            // btnDescargarUsuarios
+            // 
+            this.btnDescargarUsuarios.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(58)))), ((int)(((byte)(237)))));
+            this.btnDescargarUsuarios.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDescargarUsuarios.FlatAppearance.BorderSize = 0;
+            this.btnDescargarUsuarios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDescargarUsuarios.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnDescargarUsuarios.ForeColor = System.Drawing.Color.White;
+            this.btnDescargarUsuarios.Location = new System.Drawing.Point(519, 6);
+            this.btnDescargarUsuarios.Name = "btnDescargarUsuarios";
+            this.btnDescargarUsuarios.Size = new System.Drawing.Size(145, 32);
+            this.btnDescargarUsuarios.TabIndex = 3;
+            this.btnDescargarUsuarios.Text = "📥 Descargar Usuarios";
+            this.btnDescargarUsuarios.UseVisualStyleBackColor = false;
+            this.btnDescargarUsuarios.Click += new System.EventHandler(this.btnDescargarUsuarios_Click);
+            // 
+            // btnSubirTodosEmpleados
+            // 
+            this.btnSubirTodosEmpleados.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(119)))), ((int)(((byte)(6)))));
+            this.btnSubirTodosEmpleados.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSubirTodosEmpleados.FlatAppearance.BorderSize = 0;
+            this.btnSubirTodosEmpleados.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSubirTodosEmpleados.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnSubirTodosEmpleados.ForeColor = System.Drawing.Color.White;
+            this.btnSubirTodosEmpleados.Location = new System.Drawing.Point(672, 6);
+            this.btnSubirTodosEmpleados.Name = "btnSubirTodosEmpleados";
+            this.btnSubirTodosEmpleados.Size = new System.Drawing.Size(140, 32);
+            this.btnSubirTodosEmpleados.TabIndex = 4;
+            this.btnSubirTodosEmpleados.Text = "📤 Subir Empleados";
+            this.btnSubirTodosEmpleados.UseVisualStyleBackColor = false;
+            this.btnSubirTodosEmpleados.Click += new System.EventHandler(this.btnSubirTodosEmpleados_Click);
+            // 
+            // btnReiniciar
+            // 
+            this.btnReiniciar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.btnReiniciar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnReiniciar.FlatAppearance.BorderSize = 0;
+            this.btnReiniciar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReiniciar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnReiniciar.ForeColor = System.Drawing.Color.White;
+            this.btnReiniciar.Location = new System.Drawing.Point(820, 6);
+            this.btnReiniciar.Name = "btnReiniciar";
+            this.btnReiniciar.Size = new System.Drawing.Size(135, 32);
+            this.btnReiniciar.TabIndex = 5;
+            this.btnReiniciar.Text = "🔄 Reiniciar Reloj";
+            this.btnReiniciar.UseVisualStyleBackColor = false;
+            this.btnReiniciar.Click += new System.EventHandler(this.btnReiniciar_Click);
             // 
             // tabPageMantenimiento
             // 

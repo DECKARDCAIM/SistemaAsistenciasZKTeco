@@ -427,14 +427,27 @@ namespace Sistema.Presentacion
 
         private void btnDescargarMarcaciones_Click(object sender, EventArgs e)
         {
-            Biometrico bio = ObtenerBiometricoSeleccionado();
-            if (bio == null) return;
-
-            using (var frmProgreso = new FrmProgresoSync(bio))
+            List<Biometrico> dispositivos = N_Biometrico.ListarActivos();
+            if (dispositivos == null || dispositivos.Count == 0)
             {
-                frmProgreso.ShowDialog(this);
-                CargarListado();
+                MessageBox.Show("No hay dispositivos biométricos activos registrados para sincronizar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
+
+            foreach (var bio in dispositivos)
+            {
+                using (var frmProgreso = new FrmProgresoSync(bio))
+                {
+                    var result = frmProgreso.ShowDialog(this);
+                    if (result == DialogResult.Cancel && !frmProgreso.Exito)
+                    {
+                        // Si el usuario canceló explícitamente, detener el recorrido
+                        break;
+                    }
+                }
+            }
+
+            CargarListado();
         }
 
 

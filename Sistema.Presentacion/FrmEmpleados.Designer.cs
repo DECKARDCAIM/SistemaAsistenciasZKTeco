@@ -102,7 +102,6 @@ namespace Sistema.Presentacion
             this.pnlTop.Controls.Add(this.btnBuscar);
             this.pnlTop.Controls.Add(this.btnNuevo);
             this.pnlTop.Controls.Add(this.btnExportar);
-            this.pnlTop.Controls.Add(this.btnDescargarBiometrico);
             this.pnlTop.Controls.Add(this.btnSubirBiometrico);
             this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTop.Location = new System.Drawing.Point(12, 12);
@@ -155,9 +154,9 @@ namespace Sistema.Presentacion
             this.btnNuevo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNuevo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnNuevo.ForeColor = System.Drawing.Color.White;
-            this.btnNuevo.Location = new System.Drawing.Point(440, 10);
+            this.btnNuevo.Location = new System.Drawing.Point(555, 10);
             this.btnNuevo.Name = "btnNuevo";
-            this.btnNuevo.Size = new System.Drawing.Size(95, 30);
+            this.btnNuevo.Size = new System.Drawing.Size(100, 30);
             this.btnNuevo.TabIndex = 3;
             this.btnNuevo.Text = "➕ Nuevo";
             this.btnNuevo.UseVisualStyleBackColor = false;
@@ -172,30 +171,13 @@ namespace Sistema.Presentacion
             this.btnExportar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExportar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnExportar.ForeColor = System.Drawing.Color.White;
-            this.btnExportar.Location = new System.Drawing.Point(545, 10);
+            this.btnExportar.Location = new System.Drawing.Point(665, 10);
             this.btnExportar.Name = "btnExportar";
-            this.btnExportar.Size = new System.Drawing.Size(135, 30);
+            this.btnExportar.Size = new System.Drawing.Size(140, 30);
             this.btnExportar.TabIndex = 4;
             this.btnExportar.Text = "📊 Exportar";
             this.btnExportar.UseVisualStyleBackColor = false;
             this.btnExportar.Click += new System.EventHandler(this.btnExportar_Click);
-            // 
-            // btnDescargarBiometrico
-            // 
-            this.btnDescargarBiometrico.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDescargarBiometrico.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(139)))), ((int)(((byte)(92)))), ((int)(((byte)(246)))));
-            this.btnDescargarBiometrico.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDescargarBiometrico.FlatAppearance.BorderSize = 0;
-            this.btnDescargarBiometrico.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDescargarBiometrico.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnDescargarBiometrico.ForeColor = System.Drawing.Color.White;
-            this.btnDescargarBiometrico.Location = new System.Drawing.Point(690, 10);
-            this.btnDescargarBiometrico.Name = "btnDescargarBiometrico";
-            this.btnDescargarBiometrico.Size = new System.Drawing.Size(140, 30);
-            this.btnDescargarBiometrico.TabIndex = 5;
-            this.btnDescargarBiometrico.Text = "📥 Bajar de Reloj";
-            this.btnDescargarBiometrico.UseVisualStyleBackColor = false;
-            this.btnDescargarBiometrico.Click += new System.EventHandler(this.btnDescargarBiometrico_Click);
             // 
             // btnSubirBiometrico
             // 
@@ -206,10 +188,10 @@ namespace Sistema.Presentacion
             this.btnSubirBiometrico.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSubirBiometrico.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnSubirBiometrico.ForeColor = System.Drawing.Color.White;
-            this.btnSubirBiometrico.Location = new System.Drawing.Point(838, 10);
+            this.btnSubirBiometrico.Location = new System.Drawing.Point(815, 10);
             this.btnSubirBiometrico.Name = "btnSubirBiometrico";
-            this.btnSubirBiometrico.Size = new System.Drawing.Size(135, 30);
-            this.btnSubirBiometrico.TabIndex = 6;
+            this.btnSubirBiometrico.Size = new System.Drawing.Size(155, 30);
+            this.btnSubirBiometrico.TabIndex = 5;
             this.btnSubirBiometrico.Text = "📤 Subir a Reloj";
             this.btnSubirBiometrico.UseVisualStyleBackColor = false;
             this.btnSubirBiometrico.Click += new System.EventHandler(this.btnSubirBiometrico_Click);
