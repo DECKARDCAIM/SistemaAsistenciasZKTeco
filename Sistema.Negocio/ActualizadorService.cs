@@ -122,26 +122,32 @@ namespace Sistema.Negocio
             return info;
         }
 
-        public async Task<string> DescargarActualizacionAsync(InfoVersion info, IProgress<ProgresoDescarga> progreso = null)
+        public Task<string> DescargarActualizacionAsync(InfoVersion info, IProgress<ProgresoDescarga> progreso = null)
         {
-            if (string.IsNullOrEmpty(info.UrlDescarga))
+            return DescargarActualizacionAsync(info.UrlDescarga, info.NombreArchivo ?? "Update_latest.zip", progreso, System.Threading.CancellationToken.None);
+        }
+
+        public async Task<string> DescargarActualizacionAsync(string urlDescarga, string nombreArchivo, IProgress<ProgresoDescarga> progreso, System.Threading.CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrEmpty(urlDescarga))
                 throw new InvalidOperationException("No se proporcionó una URL de descarga válida.");
 
             string tempDir = Path.Combine(Path.GetTempPath(), "SistemaAsistencias_Updates");
             if (!Directory.Exists(tempDir))
                 Directory.CreateDirectory(tempDir);
 
-            string targetFile = Path.Combine(tempDir, info.NombreArchivo ?? "Update_latest.zip");
+            string targetFile = Path.Combine(tempDir, nombreArchivo ?? "Update_latest.zip");
             if (File.Exists(targetFile))
                 File.Delete(targetFile);
 
             var stopwatch = Stopwatch.StartNew();
             long totalBytes = -1;
 
-            var request = (HttpWebRequest)WebRequest.Create(info.UrlDescarga);
+            var request = (HttpWebRequest)WebRequest.Create(urlDescarga);
             request.UserAgent = "SistemaAsistenciasZKTeco-Updater";
             request.AllowAutoRedirect = true;
 
+            using (cancellationToken.Register(() => request.Abort(), false))
             using (var response = await request.GetResponseAsync())
             {
                 totalBytes = response.ContentLength;
@@ -153,9 +159,9 @@ namespace Sistema.Negocio
                     long totalRead = 0;
                     int bytesRead;
 
-                    while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                    while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) > 0)
                     {
-                        await fileStream.WriteAsync(buffer, 0, bytesRead);
+                        await fileStream.WriteAsync(buffer, 0, bytesRead, cancellationToken);
                         totalRead += bytesRead;
 
                         if (progreso != null)
