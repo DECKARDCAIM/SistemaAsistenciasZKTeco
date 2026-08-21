@@ -57,7 +57,9 @@ namespace Sistema.Presentacion
             {
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
                 string logoFile = "Logotipo-White.png";
-                string logoPath = Path.Combine(baseDir, "Resources", logoFile);
+                string logoPath = Path.Combine(baseDir, "Logotipos", logoFile);
+                if (!File.Exists(logoPath))
+                    logoPath = Path.Combine(baseDir, "Resources", logoFile);
                 if (!File.Exists(logoPath))
                     logoPath = Path.Combine(baseDir, @"..\..\Resources", logoFile);
                 if (!File.Exists(logoPath))

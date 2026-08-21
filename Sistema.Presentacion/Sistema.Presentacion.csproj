@@ -366,6 +366,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(SolutionDir)Sistema.Actualizador\bin\$(Platform)\$(Configuration)\Actualizador.exe" "$(TargetDir)Actualizador.exe"
-copy /Y "$(SolutionDir)Sistema.Actualizador\bin\$(Platform)\$(Configuration)\Actualizador.exe.config" "$(TargetDir)Actualizador.exe.config" 2&gt;nul</PostBuildEvent>
+copy /Y "$(SolutionDir)Sistema.Actualizador\bin\$(Platform)\$(Configuration)\Actualizador.exe.config" "$(TargetDir)Actualizador.exe.config" 2&gt;nul
+xcopy /Y /I /E "$(SolutionDir)Logotipos" "$(TargetDir)Logotipos\" 2&gt;nul</PostBuildEvent>
   </PropertyGroup>
 </Project>

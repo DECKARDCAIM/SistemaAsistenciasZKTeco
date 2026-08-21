@@ -21,7 +21,24 @@ namespace Sistema.Presentacion
             _info = info;
             _cts = new CancellationTokenSource();
 
+            CargarIcono();
             CargarDatos();
+        }
+
+        private void CargarIcono()
+        {
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string icoPath = Path.Combine(baseDir, "app.ico");
+                if (File.Exists(icoPath))
+                {
+                    this.Icon = new Icon(icoPath);
+                    return;
+                }
+                this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+            }
+            catch { }
         }
 
         private void CargarDatos()

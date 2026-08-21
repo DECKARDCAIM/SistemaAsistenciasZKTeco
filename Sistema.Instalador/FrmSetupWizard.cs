@@ -515,7 +515,15 @@ namespace Sistema.Instalador
                 dynamic shortcut = shell.CreateShortcut(rutaLnk);
                 shortcut.TargetPath = targetPath;
                 shortcut.WorkingDirectory = workingDir;
-                shortcut.IconLocation = targetPath + ",0";
+                string iconFile = Path.Combine(workingDir, "app.ico");
+                if (File.Exists(iconFile))
+                {
+                    shortcut.IconLocation = iconFile + ",0";
+                }
+                else
+                {
+                    shortcut.IconLocation = targetPath + ",0";
+                }
                 shortcut.Description = descripcion;
                 shortcut.Save();
                 Marshal.FinalReleaseComObject(shortcut);
@@ -534,6 +542,8 @@ namespace Sistema.Instalador
 
             string uninstallerPath = Path.Combine(rutaInstalacion, "Desinstalador.exe");
             string mainExePath = Path.Combine(rutaInstalacion, "Sistema.Presentacion.exe");
+            string icoPath = Path.Combine(rutaInstalacion, "app.ico");
+            string displayIcon = File.Exists(icoPath) ? icoPath + ",0" : string.Format("\"{0}\",0", mainExePath);
 
             foreach (string subKey in baseKeys)
             {
@@ -549,7 +559,7 @@ namespace Sistema.Instalador
                             key.SetValue("InstallLocation", rutaInstalacion);
                             key.SetValue("UninstallString", string.Format("\"{0}\"", uninstallerPath));
                             key.SetValue("QuietUninstallString", string.Format("\"{0}\" /quiet", uninstallerPath));
-                            key.SetValue("DisplayIcon", string.Format("\"{0}\",0", mainExePath));
+                            key.SetValue("DisplayIcon", displayIcon);
                             key.SetValue("EstimatedSize", 45000, RegistryValueKind.DWord);
                             key.SetValue("NoModify", 1, RegistryValueKind.DWord);
                             key.SetValue("NoRepair", 1, RegistryValueKind.DWord);

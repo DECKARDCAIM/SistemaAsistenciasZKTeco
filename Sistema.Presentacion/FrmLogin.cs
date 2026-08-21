@@ -16,6 +16,65 @@ namespace Sistema.Presentacion
             InitializeComponent();
             AddControlBox();
             ApplyCustomAppearance();
+            CargarIconoApp();
+            CargarLogotipoInstitucional();
+        }
+
+        private void CargarIconoApp()
+        {
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string[] rutasPosibles = new string[]
+                {
+                    System.IO.Path.Combine(baseDir, "app.ico"),
+                    System.IO.Path.Combine(baseDir, "Logotipos", "app.ico"),
+                    System.IO.Path.Combine(baseDir, @"..\..\..\Logotipos\app.ico")
+                };
+
+                foreach (string ruta in rutasPosibles)
+                {
+                    if (System.IO.File.Exists(ruta))
+                    {
+                        this.Icon = new Icon(ruta);
+                        this.ShowIcon = true;
+                        return;
+                    }
+                }
+
+                this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+                this.ShowIcon = true;
+            }
+            catch { }
+        }
+
+        private void CargarLogotipoInstitucional()
+        {
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string[] rutasPosibles = new string[]
+                {
+                    System.IO.Path.Combine(baseDir, "Logotipos", "Logotipo-White.png"),
+                    System.IO.Path.Combine(baseDir, @"..\..\..\Logotipos\Logotipo-White.png"),
+                    System.IO.Path.Combine(baseDir, "Logotipo-White.png")
+                };
+
+                foreach (string ruta in rutasPosibles)
+                {
+                    if (System.IO.File.Exists(ruta))
+                    {
+                        picLogo.Image = Image.FromFile(System.IO.Path.GetFullPath(ruta));
+                        return;
+                    }
+                }
+
+                // Fallback: usar icono del ejecutable como imagen
+                picLogo.IconChar = FontAwesome.Sharp.IconChar.HospitalUser;
+                picLogo.IconColor = Color.White;
+                picLogo.IconSize = 80;
+            }
+            catch { }
         }
 
         private void AddControlBox()

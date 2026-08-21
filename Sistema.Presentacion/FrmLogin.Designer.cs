@@ -80,11 +80,11 @@ namespace Sistema.Presentacion
             // lblDescription
             // 
             this.lblDescription.BackColor = System.Drawing.Color.Transparent;
-            this.lblDescription.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.lblDescription.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.lblDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(215)))), ((int)(((byte)(255)))));
-            this.lblDescription.Location = new System.Drawing.Point(25, 260);
+            this.lblDescription.Location = new System.Drawing.Point(15, 255);
             this.lblDescription.Name = "lblDescription";
-            this.lblDescription.Size = new System.Drawing.Size(290, 80);
+            this.lblDescription.Size = new System.Drawing.Size(310, 75);
             this.lblDescription.TabIndex = 3;
             this.lblDescription.Text = "Plataforma Integral de Gestión de Asistencias, Turnos y Comunicación con Relojes Biométricos ZKTeco.";
             this.lblDescription.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -92,11 +92,11 @@ namespace Sistema.Presentacion
             // lblTitle
             // 
             this.lblTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 13.5F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(20, 195);
+            this.lblTitle.Location = new System.Drawing.Point(10, 190);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(300, 55);
+            this.lblTitle.Size = new System.Drawing.Size(320, 50);
             this.lblTitle.TabIndex = 2;
             this.lblTitle.Text = "SISTEMA DE ASISTENCIAS ZKTECO";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -105,27 +105,28 @@ namespace Sistema.Presentacion
             // 
             this.picLogo.BackColor = System.Drawing.Color.Transparent;
             this.picLogo.ForeColor = System.Drawing.Color.White;
-            this.picLogo.IconChar = FontAwesome.Sharp.IconChar.Fingerprint;
+            this.picLogo.IconChar = FontAwesome.Sharp.IconChar.None;
             this.picLogo.IconColor = System.Drawing.Color.White;
             this.picLogo.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.picLogo.IconSize = 75;
-            this.picLogo.Location = new System.Drawing.Point(132, 90);
+            this.picLogo.IconSize = 1;
+            this.picLogo.Location = new System.Drawing.Point(20, 60);
             this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(75, 75);
+            this.picLogo.Size = new System.Drawing.Size(300, 115);
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picLogo.TabIndex = 1;
             this.picLogo.TabStop = false;
             // 
             // lblWelcome
             // 
-            this.lblWelcome.AutoSize = true;
             this.lblWelcome.BackColor = System.Drawing.Color.Transparent;
-            this.lblWelcome.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblWelcome.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold);
             this.lblWelcome.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(202)))), ((int)(((byte)(249)))));
-            this.lblWelcome.Location = new System.Drawing.Point(115, 50);
+            this.lblWelcome.Location = new System.Drawing.Point(0, 30);
             this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(110, 20);
+            this.lblWelcome.Size = new System.Drawing.Size(340, 22);
             this.lblWelcome.TabIndex = 0;
             this.lblWelcome.Text = "BIENVENIDO A";
+            this.lblWelcome.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblCaption
             // 
