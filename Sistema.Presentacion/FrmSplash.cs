@@ -100,11 +100,56 @@ namespace Sistema.Presentacion
         private void FrmSplash_Load(object sender, EventArgs e)
         {
             timerProgress.Start();
-            Task.Run(() =>
+            IniciarVerificacionesAsync();
+        }
+
+        private async void IniciarVerificacionesAsync()
+        {
+            // 1. Probar conexion DB en segundo plano
+            var taskDb = Task.Run(() => Conexion.ProbarConexion(out _mensajeConexion));
+
+            // 2. Verificar si hay actualizacion en GitHub
+            try
             {
-                _conexionExitosa = Conexion.ProbarConexion(out _mensajeConexion);
-                _conexionProbada = true;
-            });
+                var actualizador = new Sistema.Negocio.ActualizadorService();
+                var taskActualizacion = actualizador.VerificarActualizacionAsync();
+
+                // Esperar con un timeout de 3 segundos para no demorar el inicio si no hay red
+                var taskTerminada = await Task.WhenAny(taskActualizacion, Task.Delay(3000));
+                if (taskTerminada == taskActualizacion)
+                {
+                    Sistema.Negocio.InfoVersion info = await taskActualizacion;
+                    if (info.HayActualizacion)
+                    {
+                        timerProgress.Stop();
+                        lblStatus.Text = string.Format("Nueva versión v{0} disponible. Descargando...", info.VersionNueva);
+                        lblStatus.ForeColor = System.Drawing.Color.FromArgb(255, 183, 77);
+
+                        var progreso = new Progress<Sistema.Negocio.ProgresoDescarga>(p =>
+                        {
+                            progressBar.Value = Math.Min(100, Math.Max(0, p.Porcentaje));
+                            lblStatus.Text = string.Format("Descargando actualización v{0}... {1}% ({2} MB/s)", info.VersionNueva, p.Porcentaje, p.VelocidadMBs);
+                        });
+
+                        string zipPath = await actualizador.DescargarActualizacionAsync(info, progreso);
+
+                        lblStatus.Text = "¡Actualización descargada! Aplicando nueva versión...";
+                        progressBar.Value = 100;
+                        await Task.Delay(600);
+
+                        actualizador.EjecutarActualizador(zipPath, info.VersionNueva);
+
+                        // Salir del splash para que el actualizador reemplace los archivos
+                        this.DialogResult = DialogResult.Abort;
+                        this.Close();
+                        return;
+                    }
+                }
+            }
+            catch { }
+
+            _conexionExitosa = await taskDb;
+            _conexionProbada = true;
         }
 
         private void timerProgress_Tick(object sender, EventArgs e)

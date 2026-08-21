@@ -90,6 +90,12 @@
     <Compile Include="FrmActualizacion.Designer.cs">
       <DependentUpon>FrmActualizacion.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmInfoSistema.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmInfoSistema.Designer.cs">
+      <DependentUpon>FrmInfoSistema.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmBiometricos.cs">
       <SubType>Form</SubType>
     </Compile>

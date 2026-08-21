@@ -18,7 +18,6 @@ namespace Sistema.Presentacion
         private Form _formularioActivo = null;
         private RJMenuButton _botonActivo = null;
         private readonly Dictionary<string, Form> _cachedForms = new Dictionary<string, Form>();
-        private System.Windows.Forms.Timer _timerActualizaciones;
 
         public FrmPrincipal()
         {
@@ -28,40 +27,11 @@ namespace Sistema.Presentacion
             InicializarVistasPrecargadas();
             AplicarTema();
             IniciarServiciosEnVivo();
-            IniciarVerificadorActualizacionesSegundoPlano();
         }
 
         public FrmPrincipal(Usuario usuario) : this()
         {
             _usuarioActual = usuario;
-        }
-
-        private void IniciarVerificadorActualizacionesSegundoPlano()
-        {
-            _timerActualizaciones = new System.Windows.Forms.Timer();
-            _timerActualizaciones.Interval = 15000; // Primer chequeo a los 15 segundos
-            _timerActualizaciones.Tick += async (s, e) =>
-            {
-                _timerActualizaciones.Interval = 3600000; // Luego cada 1 hora (3600 seg)
-                try
-                {
-                    var actualizadorService = new ActualizadorService();
-                    InfoVersion info = await actualizadorService.VerificarActualizacionAsync();
-                    if (info.HayActualizacion)
-                    {
-                        if (this.IsHandleCreated && !this.IsDisposed)
-                        {
-                            this.BeginInvoke((Action)(() =>
-                            {
-                                btnNavActualizar.Text = " Actualizaciones (!)";
-                                btnNavActualizar.IconColor = Color.FromArgb(255, 87, 34);
-                            }));
-                        }
-                    }
-                }
-                catch { }
-            };
-            _timerActualizaciones.Start();
         }
 
         private void CargarIconoApp()
@@ -232,6 +202,7 @@ namespace Sistema.Presentacion
 
             Color colorPrimario = UIAppearance.PrimaryStyleColor != Color.Empty ? UIAppearance.PrimaryStyleColor : Color.FromArgb(0, 180, 216);
             pbPerfil.BorderColor = colorPrimario;
+            btnInfoSistema.IconColor = esOscuro ? Color.FromArgb(144, 202, 249) : colorPrimario;
 
             if (_botonActivo != null)
             {
@@ -368,43 +339,13 @@ namespace Sistema.Presentacion
             btnNavTema.ForeColor = textoInactivo;
             btnNavTema.IconColor = Color.FromArgb(171, 71, 188);
             btnNavTema.Font = fuenteNormal;
-
-            btnNavActualizar.BackColor = colorInactivo;
-            btnNavActualizar.ForeColor = textoInactivo;
-            btnNavActualizar.IconColor = Color.FromArgb(0, 180, 216);
-            btnNavActualizar.Font = fuenteNormal;
         }
 
-        private async void btnNavActualizar_Click(object sender, EventArgs e)
+        private void btnInfoSistema_Click(object sender, EventArgs e)
         {
-            ActivarBoton(btnNavActualizar);
-            Cursor = Cursors.WaitCursor;
-
-            try
+            using (var frm = new FrmInfoSistema())
             {
-                var actualizadorService = new ActualizadorService();
-                InfoVersion info = await actualizadorService.VerificarActualizacionAsync();
-
-                Cursor = Cursors.Default;
-
-                if (info.HayActualizacion)
-                {
-                    using (var frm = new FrmActualizacion(info))
-                    {
-                        frm.ShowDialog(this);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(
-                        string.Format("Su sistema se encuentra actualizado a la última versión disponible (v{0}).", info.VersionActual),
-                        "Sistema Actualizado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                Cursor = Cursors.Default;
-                MessageBox.Show("No se pudo verificar actualizaciones:\n" + ex.Message, "Verificación de Actualizaciones", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                frm.ShowDialog(this);
             }
         }
 

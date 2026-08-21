@@ -20,7 +20,6 @@ namespace Sistema.Presentacion
             this.components = new System.ComponentModel.Container();
             this.pnlSideMenu = new System.Windows.Forms.Panel();
             this.btnNavSalir = new RJCodeUI_M1.RJControls.RJMenuButton();
-            this.btnNavActualizar = new RJCodeUI_M1.RJControls.RJMenuButton();
             this.btnNavTema = new RJCodeUI_M1.RJControls.RJMenuButton();
             this.btnNavUsuarios = new RJCodeUI_M1.RJControls.RJMenuButton();
             this.btnNavAsistencias = new RJCodeUI_M1.RJControls.RJMenuButton();
@@ -32,6 +31,7 @@ namespace Sistema.Presentacion
             this.lblLogoTitle = new System.Windows.Forms.Label();
             this.picSideLogo = new FontAwesome.Sharp.IconPictureBox();
             this.pnlTitleBar = new System.Windows.Forms.Panel();
+            this.btnInfoSistema = new FontAwesome.Sharp.IconPictureBox();
             this.lblUsuarioRol = new System.Windows.Forms.Label();
             this.lblUsuarioNombre = new System.Windows.Forms.Label();
             this.pbPerfil = new RJCodeUI_M1.RJControls.RJCircularPictureBox();
@@ -45,6 +45,7 @@ namespace Sistema.Presentacion
             this.pnlSideMenuHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picSideLogo)).BeginInit();
             this.pnlTitleBar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnInfoSistema)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPerfil)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,7 +53,6 @@ namespace Sistema.Presentacion
             // 
             this.pnlSideMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
             this.pnlSideMenu.Controls.Add(this.btnNavSalir);
-            this.pnlSideMenu.Controls.Add(this.btnNavActualizar);
             this.pnlSideMenu.Controls.Add(this.btnNavTema);
             this.pnlSideMenu.Controls.Add(this.btnNavUsuarios);
             this.pnlSideMenu.Controls.Add(this.btnNavAsistencias);
@@ -117,32 +117,6 @@ namespace Sistema.Presentacion
             this.btnNavTema.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnNavTema.UseVisualStyleBackColor = false;
             this.btnNavTema.Click += new System.EventHandler(this.btnNavTema_Click);
-            // 
-            // btnNavActualizar
-            // 
-            this.btnNavActualizar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
-            this.btnNavActualizar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnNavActualizar.FlatAppearance.BorderSize = 0;
-            this.btnNavActualizar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(42)))), ((int)(((byte)(75)))));
-            this.btnNavActualizar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(42)))), ((int)(((byte)(75)))));
-            this.btnNavActualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNavActualizar.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnNavActualizar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(210)))), ((int)(((byte)(235)))));
-            this.btnNavActualizar.IconChar = FontAwesome.Sharp.IconChar.CloudDownloadAlt;
-            this.btnNavActualizar.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(180)))), ((int)(((byte)(216)))));
-            this.btnNavActualizar.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnNavActualizar.IconSize = 24;
-            this.btnNavActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNavActualizar.Location = new System.Drawing.Point(0, 375);
-            this.btnNavActualizar.Name = "btnNavActualizar";
-            this.btnNavActualizar.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
-            this.btnNavActualizar.Size = new System.Drawing.Size(235, 50);
-            this.btnNavActualizar.TabIndex = 7;
-            this.btnNavActualizar.Text = "   Actualizaciones";
-            this.btnNavActualizar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNavActualizar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnNavActualizar.UseVisualStyleBackColor = false;
-            this.btnNavActualizar.Click += new System.EventHandler(this.btnNavActualizar_Click);
             // 
             // btnNavUsuarios
             // 
@@ -339,6 +313,7 @@ namespace Sistema.Presentacion
             // pnlTitleBar
             // 
             this.pnlTitleBar.BackColor = System.Drawing.Color.White;
+            this.pnlTitleBar.Controls.Add(this.btnInfoSistema);
             this.pnlTitleBar.Controls.Add(this.lblUsuarioRol);
             this.pnlTitleBar.Controls.Add(this.lblUsuarioNombre);
             this.pnlTitleBar.Controls.Add(this.pbPerfil);
@@ -349,6 +324,23 @@ namespace Sistema.Presentacion
             this.pnlTitleBar.Name = "pnlTitleBar";
             this.pnlTitleBar.Size = new System.Drawing.Size(1045, 60);
             this.pnlTitleBar.TabIndex = 1;
+            // 
+            // btnInfoSistema
+            // 
+            this.btnInfoSistema.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnInfoSistema.BackColor = System.Drawing.Color.Transparent;
+            this.btnInfoSistema.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnInfoSistema.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(53)))), ((int)(((byte)(147)))));
+            this.btnInfoSistema.IconChar = FontAwesome.Sharp.IconChar.InfoCircle;
+            this.btnInfoSistema.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(53)))), ((int)(((byte)(147)))));
+            this.btnInfoSistema.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnInfoSistema.IconSize = 28;
+            this.btnInfoSistema.Location = new System.Drawing.Point(930, 16);
+            this.btnInfoSistema.Name = "btnInfoSistema";
+            this.btnInfoSistema.Size = new System.Drawing.Size(28, 28);
+            this.btnInfoSistema.TabIndex = 5;
+            this.btnInfoSistema.TabStop = false;
+            this.btnInfoSistema.Click += new System.EventHandler(this.btnInfoSistema_Click);
             // 
             // lblUsuarioRol
             // 
@@ -478,9 +470,9 @@ namespace Sistema.Presentacion
         private RJCodeUI_M1.RJControls.RJMenuButton btnNavAsistencias;
         private RJCodeUI_M1.RJControls.RJMenuButton btnNavUsuarios;
         private RJCodeUI_M1.RJControls.RJMenuButton btnNavTema;
-        private RJCodeUI_M1.RJControls.RJMenuButton btnNavActualizar;
         private RJCodeUI_M1.RJControls.RJMenuButton btnNavSalir;
         private System.Windows.Forms.Panel pnlTitleBar;
+        private FontAwesome.Sharp.IconPictureBox btnInfoSistema;
         private System.Windows.Forms.Label lblTituloSeccion;
         private System.Windows.Forms.Label lblReloj;
         private RJCodeUI_M1.RJControls.RJCircularPictureBox pbPerfil;
