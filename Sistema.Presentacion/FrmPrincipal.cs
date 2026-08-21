@@ -39,19 +39,14 @@ namespace Sistema.Presentacion
             try
             {
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                string iconPath = Path.Combine(baseDir, "Resources", "logo.png");
-                if (!File.Exists(iconPath))
-                    iconPath = Path.Combine(baseDir, @"..\..\Resources\logo.png");
-                if (!File.Exists(iconPath))
-                    iconPath = Path.Combine(baseDir, @"..\..\Logotipos\logo.png");
-
-                if (File.Exists(iconPath))
+                string icoPath = Path.Combine(baseDir, "app.ico");
+                if (File.Exists(icoPath))
                 {
-                    using (Bitmap bmp = new Bitmap(iconPath))
-                    {
-                        this.Icon = Icon.FromHandle(bmp.GetHicon());
-                    }
+                    this.Icon = new Icon(icoPath);
+                    return;
                 }
+
+                this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             }
             catch { }
         }

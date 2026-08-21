@@ -20,6 +20,13 @@ namespace Sistema.Instalador
         {
             InitializeComponent();
             txtRutaDestino.Text = _rutaInstalacion;
+            try
+            {
+                string icoPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "app.ico");
+                if (File.Exists(icoPath)) this.Icon = new Icon(icoPath);
+                else this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+            }
+            catch { }
         }
 
         private void FrmSetupWizard_Load(object sender, EventArgs e)
