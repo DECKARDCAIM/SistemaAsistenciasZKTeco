@@ -1,8 +1,8 @@
 {
-  "version": "1.0.2",
-  "titulo": "Actualizacion v1.0.2 - Hospital de El Progreso",
+  "version": "1.0.3",
+  "titulo": "Actualizacion v1.0.3 - Hospital de El Progreso",
   "fecha": "2026-08-21",
-  "notas": "- Nueva pantalla de carga Splash adaptada dinamicamente al tema.\n- Logotipo institucional oficial en alta resolucion.\n- Verificacion automatica de actualizaciones en segundo plano cada 1 hora.\n- Icono oficial app.ico integrado en todos los modulos y ejecutables.",
+  "notas": "- Boton de Informacion del Sistema alineado elegantemente en la barra superior junto al boton minimizar.\n- Auto-actualizador rapido e invisible en la pantalla de carga Splash.\n- Optimizacion de rendimiento y conexion con biometricos ZKTeco.",
   "url_descarga": "https://raw.githubusercontent.com/DECKARDCAIM/SistemaAsistenciasZKTeco/master/Instalador/Update_latest.zip",
   "archivo": "Update_latest.zip"
 }

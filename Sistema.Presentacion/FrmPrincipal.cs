@@ -133,10 +133,12 @@ namespace Sistema.Presentacion
             this.pnlTitleBar.Controls.Add(this.btnClose);
             this.pnlTitleBar.Controls.Add(this.btnMaximize);
             this.pnlTitleBar.Controls.Add(this.btnMinimize);
+            this.pnlTitleBar.Controls.Add(this.btnInfoSistema);
 
             this.btnClose.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             this.btnMaximize.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             this.btnMinimize.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            this.btnInfoSistema.Anchor = AnchorStyles.Top | AnchorStyles.Right;
 
             this.btnClose.Height = 35;
             this.btnClose.Width = 42;
@@ -145,26 +147,41 @@ namespace Sistema.Presentacion
             this.btnMinimize.Height = 35;
             this.btnMinimize.Width = 42;
 
+            this.btnInfoSistema.Height = 35;
+            this.btnInfoSistema.Width = 38;
+            this.btnInfoSistema.IconSize = 18;
+            this.btnInfoSistema.SizeMode = PictureBoxSizeMode.CenterImage;
+
             this.btnClose.Location = new Point(this.pnlTitleBar.Width - btnClose.Width, 0);
             this.btnMaximize.Location = new Point(this.btnClose.Location.X - btnMaximize.Width, 0);
             this.btnMinimize.Location = new Point(this.btnMaximize.Location.X - btnMinimize.Width, 0);
+            this.btnInfoSistema.Location = new Point(this.btnMinimize.Location.X - btnInfoSistema.Width, 0);
+
+            this.btnInfoSistema.MouseEnter += (s, e) =>
+            {
+                bool dark = RJCodeUI_M1.Settings.UIAppearance.Theme == RJCodeUI_M1.Settings.UITheme.Dark;
+                this.btnInfoSistema.BackColor = dark ? Color.FromArgb(45, 52, 80) : Color.FromArgb(230, 235, 245);
+                this.btnInfoSistema.IconColor = dark ? Color.White : Color.FromArgb(40, 53, 147);
+            };
+            this.btnInfoSistema.MouseLeave += (s, e) =>
+            {
+                bool dark = RJCodeUI_M1.Settings.UIAppearance.Theme == RJCodeUI_M1.Settings.UITheme.Dark;
+                this.btnInfoSistema.BackColor = Color.Transparent;
+                this.btnInfoSistema.IconColor = dark ? Color.FromArgb(160, 175, 200) : Color.FromArgb(100, 116, 139);
+            };
 
             this.btnClose.BringToFront();
             this.btnMaximize.BringToFront();
             this.btnMinimize.BringToFront();
+            this.btnInfoSistema.BringToFront();
         }
 
         public void AplicarTema()
         {
             this.PrimaryForm = true;
             this.Resizable = true;
-            this.BorderSize = UIAppearance.FormBorderSize > 0 ? UIAppearance.FormBorderSize : 1;
 
             bool esOscuro = UIAppearance.Theme == UITheme.Dark;
-
-            Color colorBorde = UIAppearance.FormBorderColor != Color.Empty ? UIAppearance.FormBorderColor : (esOscuro ? Color.FromArgb(18, 22, 38) : Color.FromArgb(24, 30, 54));
-            this.BorderColor = colorBorde;
-
             Color colorFondo = esOscuro ? Color.FromArgb(18, 22, 38) : Color.FromArgb(245, 247, 251);
             this.BackColor = colorFondo;
             pnlContenedor.BackColor = colorFondo;
@@ -202,7 +219,7 @@ namespace Sistema.Presentacion
 
             Color colorPrimario = UIAppearance.PrimaryStyleColor != Color.Empty ? UIAppearance.PrimaryStyleColor : Color.FromArgb(0, 180, 216);
             pbPerfil.BorderColor = colorPrimario;
-            btnInfoSistema.IconColor = esOscuro ? Color.FromArgb(144, 202, 249) : colorPrimario;
+            btnInfoSistema.IconColor = esOscuro ? Color.FromArgb(160, 175, 200) : Color.FromArgb(100, 116, 139);
 
             if (_botonActivo != null)
             {
