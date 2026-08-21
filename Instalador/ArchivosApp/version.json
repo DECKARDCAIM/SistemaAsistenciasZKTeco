@@ -1,8 +1,8 @@
 {
-  "version": "1.0.4",
-  "titulo": "Actualizacion v1.0.4 - Hospital de El Progreso",
+  "version": "1.0.5",
+  "titulo": "Actualizacion v1.0.5 - Hospital de El Progreso",
   "fecha": "2026-08-21",
-  "notas": "- Descarga ultra-rapida y optimizada mediante WebClient asincrono.\n- Nombre completo del Hospital de El Progreso visible en el pie de la pantalla de carga.\n- Boton discreto de Informacion del Sistema alineado junto al boton minimizar.",
+  "notas": "- Correccion en el paso de argumentos al Actualizador para guardar version.json de forma definitiva.\n- Descarga rapida en segundo plano y transicion fluida al Login tras actualizar.\n- Boton de Informacion del Sistema en la barra de titulos.",
   "url_descarga": "https://raw.githubusercontent.com/DECKARDCAIM/SistemaAsistenciasZKTeco/master/Instalador/Update_latest.zip",
   "archivo": "Update_latest.zip"
 }

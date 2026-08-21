@@ -50,6 +50,12 @@ namespace Sistema.Actualizador
                 }
             }
 
+            // Limpieza de comillas y separadores
+            packagePath = (packagePath ?? "").Trim().Trim('"', '\'');
+            targetDir = (targetDir ?? "").Trim().Trim('"', '\'').TrimEnd('\\', '/');
+            exeName = (exeName ?? "").Trim().Trim('"', '\'');
+            commitSha = (commitSha ?? "").Trim().Trim('"', '\'');
+
             if (string.IsNullOrEmpty(packagePath) || !File.Exists(packagePath))
             {
                 Console.ForegroundColor = ConsoleColor.Red;

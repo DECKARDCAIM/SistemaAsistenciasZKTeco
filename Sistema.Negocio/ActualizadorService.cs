@@ -231,7 +231,7 @@ namespace Sistema.Negocio
 
         public void EjecutarActualizador(string rutaZip, string versionNueva = null)
         {
-            string appDir = AppDomain.CurrentDomain.BaseDirectory;
+            string appDir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\', '/');
             string actualizadorExe = Path.Combine(appDir, "Actualizador.exe");
 
             if (!File.Exists(actualizadorExe))
@@ -243,7 +243,7 @@ namespace Sistema.Negocio
             var psi = new ProcessStartInfo
             {
                 FileName = actualizadorExe,
-                Arguments = string.Format("\"{0}\" \"{1}\" \"{2}\" {3} \"{4}\"", rutaZip, appDir, Path.GetFileName(mainExe), currentPid, versionNueva ?? ""),
+                Arguments = string.Format("\"{0}\" \"{1}\" \"{2}\" {3} \"{4}\"", rutaZip, appDir, Path.GetFileName(mainExe), currentPid, (versionNueva ?? "").Trim()),
                 UseShellExecute = true,
                 Verb = "runas"
             };
