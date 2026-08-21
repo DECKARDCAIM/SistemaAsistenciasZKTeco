@@ -76,27 +76,47 @@ namespace Sistema.Negocio
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 
-                string[] urlsManifest = new string[]
-                {
-                    string.Format("https://raw.githubusercontent.com/{0}/{1}/master/version.json", _repoOwner, _repoName),
-                    string.Format("https://github.com/{0}/{1}/raw/master/version.json", _repoOwner, _repoName)
-                };
-
                 string json = null;
-                using (var client = new WebClient())
-                {
-                    client.Encoding = System.Text.Encoding.UTF8;
-                    client.Headers.Add("User-Agent", "SistemaAsistenciasZKTeco-Updater");
-                    client.Headers.Add("Cache-Control", "no-cache");
 
-                    foreach (string url in urlsManifest)
+                // 1. Intentar API directa de GitHub (sin cache CDN, tiempo real)
+                try
+                {
+                    using (var client = new WebClient())
                     {
-                        try
+                        client.Encoding = System.Text.Encoding.UTF8;
+                        client.Headers.Add("User-Agent", "SistemaAsistenciasZKTeco-Updater");
+                        client.Headers.Add("Accept", "application/vnd.github.v3.raw");
+                        client.Headers.Add("Cache-Control", "no-cache");
+                        string apiUrl = string.Format("https://api.github.com/repos/{0}/{1}/contents/version.json", _repoOwner, _repoName);
+                        json = await client.DownloadStringTaskAsync(new Uri(apiUrl));
+                    }
+                }
+                catch { }
+
+                // 2. Fallbacks directos por raw URL
+                if (string.IsNullOrEmpty(json))
+                {
+                    string[] urlsManifest = new string[]
+                    {
+                        string.Format("https://raw.githubusercontent.com/{0}/{1}/master/version.json", _repoOwner, _repoName),
+                        string.Format("https://github.com/{0}/{1}/raw/master/version.json", _repoOwner, _repoName)
+                    };
+
+                    using (var client = new WebClient())
+                    {
+                        client.Encoding = System.Text.Encoding.UTF8;
+                        client.Headers.Add("User-Agent", "SistemaAsistenciasZKTeco-Updater");
+                        client.Headers.Add("Cache-Control", "no-cache");
+
+                        foreach (string url in urlsManifest)
                         {
-                            json = await client.DownloadStringTaskAsync(new Uri(url + "?t=" + DateTime.UtcNow.Ticks));
-                            if (!string.IsNullOrEmpty(json)) break;
+                            try
+                            {
+                                json = await client.DownloadStringTaskAsync(new Uri(url + "?t=" + DateTime.UtcNow.Ticks));
+                                if (!string.IsNullOrEmpty(json)) break;
+                            }
+                            catch { }
                         }
-                        catch { }
                     }
                 }
 
