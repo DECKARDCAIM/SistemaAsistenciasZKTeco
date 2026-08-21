@@ -18,6 +18,17 @@ namespace Sistema.Presentacion
             CargarIcono();
             AplicarTema();
             CargarLogotipoInstitucional();
+            CargarVersionTexto();
+        }
+
+        private void CargarVersionTexto()
+        {
+            try
+            {
+                var actualizador = new Sistema.Negocio.ActualizadorService();
+                lblVersion.Text = "v" + actualizador.ObtenerVersionActual() + " - Hospital de El Progreso";
+            }
+            catch { }
         }
 
         private void CargarIcono()

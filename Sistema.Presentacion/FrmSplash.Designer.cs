@@ -55,11 +55,11 @@ namespace Sistema.Presentacion
             // 
             this.lblVersion.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(150)))), ((int)(((byte)(180)))));
-            this.lblVersion.Location = new System.Drawing.Point(440, 310);
+            this.lblVersion.Location = new System.Drawing.Point(280, 310);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(145, 18);
+            this.lblVersion.Size = new System.Drawing.Size(305, 18);
             this.lblVersion.TabIndex = 5;
-            this.lblVersion.Text = "v1.0.1 - Hospital de El Progreso";
+            this.lblVersion.Text = "Hospital de El Progreso";
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblStatus

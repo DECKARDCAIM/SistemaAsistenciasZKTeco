@@ -180,67 +180,53 @@ namespace Sistema.Negocio
             return new Version(major, minor, build);
         }
 
-        public Task<string> DescargarActualizacionAsync(InfoVersion info, IProgress<ProgresoDescarga> progreso = null)
+        public async Task<string> DescargarActualizacionAsync(InfoVersion info, IProgress<ProgresoDescarga> progreso = null)
         {
-            return DescargarActualizacionAsync(info.UrlDescarga, info.NombreArchivo ?? "Update_latest.zip", progreso, CancellationToken.None);
-        }
-
-        public async Task<string> DescargarActualizacionAsync(string urlDescarga, string nombreArchivo, IProgress<ProgresoDescarga> progreso, CancellationToken cancellationToken)
-        {
-            if (string.IsNullOrEmpty(urlDescarga))
+            if (string.IsNullOrEmpty(info?.UrlDescarga))
                 throw new InvalidOperationException("No se proporcionó una URL de descarga válida.");
 
             string tempDir = Path.Combine(Path.GetTempPath(), "SistemaAsistencias_Updates");
             if (!Directory.Exists(tempDir))
                 Directory.CreateDirectory(tempDir);
 
-            string targetFile = Path.Combine(tempDir, nombreArchivo ?? "Update_latest.zip");
+            string targetFile = Path.Combine(tempDir, info.NombreArchivo ?? "Update_latest.zip");
             if (File.Exists(targetFile))
-                File.Delete(targetFile);
+            {
+                try { File.Delete(targetFile); } catch { }
+            }
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 
             var stopwatch = Stopwatch.StartNew();
-            long totalBytes = -1;
 
-            var request = (HttpWebRequest)WebRequest.Create(urlDescarga);
-            request.UserAgent = "SistemaAsistenciasZKTeco-Updater";
-            request.AllowAutoRedirect = true;
-
-            using (cancellationToken.Register(() => request.Abort(), false))
-            using (var response = await request.GetResponseAsync())
+            using (var client = new WebClient())
             {
-                totalBytes = response.ContentLength;
-
-                using (var stream = response.GetResponseStream())
-                using (var fileStream = new FileStream(targetFile, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
+                client.Headers.Add("User-Agent", "SistemaAsistenciasZKTeco-Updater");
+                if (progreso != null)
                 {
-                    byte[] buffer = new byte[8192];
-                    long totalRead = 0;
-                    int bytesRead;
-
-                    while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) > 0)
+                    client.DownloadProgressChanged += (s, e) =>
                     {
-                        await fileStream.WriteAsync(buffer, 0, bytesRead, cancellationToken);
-                        totalRead += bytesRead;
-
-                        if (progreso != null)
+                        double elapsed = stopwatch.Elapsed.TotalSeconds;
+                        double speed = elapsed > 0 ? (e.BytesReceived / (1024.0 * 1024.0)) / elapsed : 0;
+                        progreso.Report(new ProgresoDescarga
                         {
-                            double elapsedSeconds = stopwatch.Elapsed.TotalSeconds;
-                            double speedMBs = elapsedSeconds > 0 ? (totalRead / (1024.0 * 1024.0)) / elapsedSeconds : 0;
-                            int pct = totalBytes > 0 ? (int)((totalRead * 100) / totalBytes) : 0;
-
-                            progreso.Report(new ProgresoDescarga
-                            {
-                                BytesRecibidos = totalRead,
-                                BytesTotales = totalBytes,
-                                Porcentaje = pct,
-                                VelocidadMBs = Math.Round(speedMBs, 2)
-                            });
-                        }
-                    }
+                            BytesRecibidos = e.BytesReceived,
+                            BytesTotales = e.TotalBytesToReceive,
+                            Porcentaje = e.ProgressPercentage,
+                            VelocidadMBs = Math.Round(speed, 2)
+                        });
+                    };
                 }
+
+                await client.DownloadFileTaskAsync(new Uri(info.UrlDescarga), targetFile);
             }
 
             return targetFile;
+        }
+
+        public Task<string> DescargarActualizacionAsync(string urlDescarga, string nombreArchivo, IProgress<ProgresoDescarga> progreso, CancellationToken cancellationToken)
+        {
+            return DescargarActualizacionAsync(new InfoVersion { UrlDescarga = urlDescarga, NombreArchivo = nombreArchivo }, progreso);
         }
 
         public void EjecutarActualizador(string rutaZip, string versionNueva = null)
