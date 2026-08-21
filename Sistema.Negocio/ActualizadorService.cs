@@ -37,7 +37,7 @@ namespace Sistema.Negocio
         public ActualizadorService(string repoOwner = null, string repoName = null)
         {
             // Leer de App.config o valores por defecto
-            _repoOwner = repoOwner ?? ConfigurationManager.AppSettings["GitHub_RepoOwner"] ?? "HospitalElProgreso";
+            _repoOwner = repoOwner ?? ConfigurationManager.AppSettings["GitHub_RepoOwner"] ?? "DECKARDCAIM";
             _repoName = repoName ?? ConfigurationManager.AppSettings["GitHub_RepoName"] ?? "SistemaAsistenciasZKTeco";
         }
 
