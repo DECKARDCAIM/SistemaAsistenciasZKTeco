@@ -87,7 +87,7 @@ namespace Sistema.Negocio
                         client.Headers.Add("User-Agent", "SistemaAsistenciasZKTeco-Updater");
                         client.Headers.Add("Accept", "application/vnd.github.v3.raw");
                         client.Headers.Add("Cache-Control", "no-cache");
-                        string apiUrl = string.Format("https://api.github.com/repos/{0}/{1}/contents/version.json", _repoOwner, _repoName);
+                        string apiUrl = string.Format("https://api.github.com/repos/{0}/{1}/contents/version.json?ref=master&t={2}", _repoOwner, _repoName, DateTime.UtcNow.Ticks);
                         json = await client.DownloadStringTaskAsync(new Uri(apiUrl));
                     }
                 }
@@ -96,10 +96,11 @@ namespace Sistema.Negocio
                 // 2. Fallbacks directos por raw URL
                 if (string.IsNullOrEmpty(json))
                 {
+                    long ticks = DateTime.UtcNow.Ticks;
                     string[] urlsManifest = new string[]
                     {
-                        string.Format("https://raw.githubusercontent.com/{0}/{1}/master/version.json", _repoOwner, _repoName),
-                        string.Format("https://github.com/{0}/{1}/raw/master/version.json", _repoOwner, _repoName)
+                        string.Format("https://raw.githubusercontent.com/{0}/{1}/master/version.json?t={2}", _repoOwner, _repoName, ticks),
+                        string.Format("https://github.com/{0}/{1}/raw/master/version.json?t={2}", _repoOwner, _repoName, ticks)
                     };
 
                     using (var client = new WebClient())
