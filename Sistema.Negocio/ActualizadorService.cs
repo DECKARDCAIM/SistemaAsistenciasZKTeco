@@ -85,6 +85,7 @@ namespace Sistema.Negocio
                 string json = null;
                 using (var client = new WebClient())
                 {
+                    client.Encoding = System.Text.Encoding.UTF8;
                     client.Headers.Add("User-Agent", "SistemaAsistenciasZKTeco-Updater");
                     client.Headers.Add("Cache-Control", "no-cache");
 

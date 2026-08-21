@@ -73,6 +73,10 @@
       <Project>{8d6b9e24-4f51-41e9-91a5-cb8e67a912d0}</Project>
       <Name>Sistema.ServicioWindows</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Sistema.Desinstalador\Sistema.Desinstalador.csproj">
+      <Project>{1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d}</Project>
+      <Name>Sistema.Desinstalador</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -80,6 +84,7 @@
 if not exist "$(SolutionDir)Instalador\ArchivosApp" mkdir "$(SolutionDir)Instalador\ArchivosApp"
 xcopy "$(SolutionDir)Sistema.Presentacion\bin\$(Platform)\$(Configuration)\*.*" "$(SolutionDir)Instalador\ArchivosApp\" /E /Y /I /Q 2&gt;nul
 copy /Y "$(SolutionDir)Sistema.ServicioWindows\bin\$(Platform)\$(Configuration)\Sistema.ServicioWindows.exe*" "$(SolutionDir)Instalador\ArchivosApp\" 2&gt;nul
+copy /Y "$(SolutionDir)Sistema.Desinstalador\bin\$(Platform)\$(Configuration)\Desinstalador.exe*" "$(SolutionDir)Instalador\ArchivosApp\" 2&gt;nul
 xcopy "$(SolutionDir)SDK\*.*" "$(SolutionDir)Instalador\ArchivosApp\" /Y /Q 2&gt;nul
 if exist "$(SolutionDir)Logotipos" xcopy "$(SolutionDir)Logotipos\*.*" "$(SolutionDir)Instalador\ArchivosApp\Logotipos\" /E /Y /I /Q 2&gt;nul
 if exist "$(SolutionDir)FormatosReportes" xcopy "$(SolutionDir)FormatosReportes\*.*" "$(SolutionDir)Instalador\ArchivosApp\FormatosReportes\" /E /Y /I /Q 2&gt;nul

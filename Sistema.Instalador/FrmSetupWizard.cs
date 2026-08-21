@@ -399,10 +399,14 @@ namespace Sistema.Instalador
                         );
                     }
 
-                    // 6. Instalar Servicio de Windows 24/7 si se solicitó
+                    // 6. Registrar en Windows "Aplicaciones y características" (Panel de Control)
+                    ReportarProgreso(91, "Registrando en Aplicaciones y características de Windows...");
+                    RegistrarDesinstaladorWindows(_rutaInstalacion);
+
+                    // 7. Instalar Servicio de Windows 24/7 si se solicitó
                     if (chkServicioWindows.Checked)
                     {
-                        ReportarProgreso(93, "Configurando Servicio de Windows 24/7 en segundo plano...");
+                        ReportarProgreso(94, "Configurando Servicio de Windows 24/7 en segundo plano...");
                         string serviceExe = Path.Combine(_rutaInstalacion, "Sistema.ServicioWindows.exe");
                         if (File.Exists(serviceExe))
                         {
@@ -518,6 +522,42 @@ namespace Sistema.Instalador
                 Marshal.FinalReleaseComObject(shell);
             }
             catch { }
+        }
+
+        private void RegistrarDesinstaladorWindows(string rutaInstalacion)
+        {
+            string[] baseKeys = new string[]
+            {
+                @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\SistemaAsistenciasZKTeco",
+                @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\SistemaAsistenciasZKTeco"
+            };
+
+            string uninstallerPath = Path.Combine(rutaInstalacion, "Desinstalador.exe");
+            string mainExePath = Path.Combine(rutaInstalacion, "Sistema.Presentacion.exe");
+
+            foreach (string subKey in baseKeys)
+            {
+                try
+                {
+                    using (RegistryKey key = Registry.LocalMachine.CreateSubKey(subKey))
+                    {
+                        if (key != null)
+                        {
+                            key.SetValue("DisplayName", "Sistema de Asistencias ZKTeco - Hospital de El Progreso");
+                            key.SetValue("DisplayVersion", "1.0.1");
+                            key.SetValue("Publisher", "Hospital de El Progreso");
+                            key.SetValue("InstallLocation", rutaInstalacion);
+                            key.SetValue("UninstallString", string.Format("\"{0}\"", uninstallerPath));
+                            key.SetValue("QuietUninstallString", string.Format("\"{0}\" /quiet", uninstallerPath));
+                            key.SetValue("DisplayIcon", string.Format("\"{0}\",0", mainExePath));
+                            key.SetValue("EstimatedSize", 45000, RegistryValueKind.DWord);
+                            key.SetValue("NoModify", 1, RegistryValueKind.DWord);
+                            key.SetValue("NoRepair", 1, RegistryValueKind.DWord);
+                        }
+                    }
+                }
+                catch { }
+            }
         }
 
         #endregion

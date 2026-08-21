@@ -94,17 +94,20 @@ namespace Sistema.Presentacion
                     return;
                 }
 
-                // Iniciar proceso de actualización atómica independiente
-                string argumentos = string.Format("--target \"{0}\" --package \"{1}\" --exe \"Sistema.Presentacion.exe\" --pid {2}",
-                    appDir.TrimEnd('\\'), zipDescargado, Process.GetCurrentProcess().Id);
+                // Iniciar proceso de actualización atómica independiente con elevación de permisos UAC
+                string argumentos = string.Format("\"{0}\" \"{1}\" \"Sistema.Presentacion.exe\" {2} \"{3}\"",
+                    zipDescargado, appDir.TrimEnd('\\'), Process.GetCurrentProcess().Id, _info.VersionNueva ?? "1.0.1");
 
-                Process.Start(new ProcessStartInfo
+                var psi = new ProcessStartInfo
                 {
                     FileName = actualizadorExe,
                     Arguments = argumentos,
                     UseShellExecute = true,
+                    Verb = "runas",
                     WorkingDirectory = appDir
-                });
+                };
+
+                Process.Start(psi);
 
                 // Cerrar la aplicación actual para permitir el reemplazo de archivos
                 Application.Exit();
