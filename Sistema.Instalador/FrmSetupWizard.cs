@@ -1,0 +1,435 @@
+using System;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Microsoft.Win32;
+
+namespace Sistema.Instalador
+{
+    public partial class FrmSetupWizard : Form
+    {
+        private int _pasoActual = 1;
+        private bool _net48Instalado = false;
+        private bool _vcInstalado = false;
+        private string _rutaInstalacion = @"C:\Program Files (x86)\Hospital El Progreso\Sistema de Asistencias ZKTeco";
+
+        public FrmSetupWizard()
+        {
+            InitializeComponent();
+            txtRutaDestino.Text = _rutaInstalacion;
+        }
+
+        private void FrmSetupWizard_Load(object sender, EventArgs e)
+        {
+            MostrarPaso(1);
+            VerificarPrerrequisitos();
+        }
+
+        private void MostrarPaso(int paso)
+        {
+            _pasoActual = paso;
+
+            pnlPaso1_Bienvenida.Visible = (paso == 1);
+            pnlPaso2_Prerrequisitos.Visible = (paso == 2);
+            pnlPaso3_Opciones.Visible = (paso == 3);
+            pnlPaso4_Progreso.Visible = (paso == 4);
+            pnlPaso5_Finalizado.Visible = (paso == 5);
+
+            btnAtras.Visible = (paso > 1 && paso < 4);
+            btnCancelar.Visible = (paso < 4);
+
+            if (paso == 1)
+            {
+                btnSiguiente.Text = "Siguiente >";
+                btnSiguiente.BackColor = Color.FromArgb(0, 180, 216);
+            }
+            else if (paso == 2)
+            {
+                btnSiguiente.Text = "Siguiente >";
+            }
+            else if (paso == 3)
+            {
+                btnSiguiente.Text = "Instalar Ahora";
+                btnSiguiente.BackColor = Color.FromArgb(16, 185, 129);
+            }
+            else if (paso == 4)
+            {
+                btnSiguiente.Visible = false;
+                btnAtras.Visible = false;
+                btnCancelar.Visible = false;
+            }
+            else if (paso == 5)
+            {
+                btnSiguiente.Visible = true;
+                btnSiguiente.Text = "Finalizar";
+                btnSiguiente.BackColor = Color.FromArgb(16, 185, 129);
+            }
+        }
+
+        private void btnSiguiente_Click(object sender, EventArgs e)
+        {
+            if (_pasoActual == 1)
+            {
+                MostrarPaso(2);
+            }
+            else if (_pasoActual == 2)
+            {
+                MostrarPaso(3);
+            }
+            else if (_pasoActual == 3)
+            {
+                _rutaInstalacion = txtRutaDestino.Text.Trim();
+                MostrarPaso(4);
+                EjecutarInstalacionAsync();
+            }
+            else if (_pasoActual == 5)
+            {
+                if (chkEjecutarApp.Checked)
+                {
+                    string targetExe = Path.Combine(_rutaInstalacion, "Sistema.Presentacion.exe");
+                    if (File.Exists(targetExe))
+                    {
+                        Process.Start(new ProcessStartInfo
+                        {
+                            FileName = targetExe,
+                            WorkingDirectory = _rutaInstalacion
+                        });
+                    }
+                }
+                Application.Exit();
+            }
+        }
+
+        private void btnAtras_Click(object sender, EventArgs e)
+        {
+            if (_pasoActual > 1 && _pasoActual < 4)
+            {
+                MostrarPaso(_pasoActual - 1);
+            }
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("¿Está seguro que desea cancelar la instalación del sistema?", "Cancelar Instalación",
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
+
+        private void btnExaminar_Click(object sender, EventArgs e)
+        {
+            using (var fbd = new FolderBrowserDialog())
+            {
+                fbd.Description = "Seleccione la carpeta de destino para el Sistema de Asistencias:";
+                fbd.SelectedPath = txtRutaDestino.Text;
+                if (fbd.ShowDialog() == DialogResult.OK)
+                {
+                    txtRutaDestino.Text = fbd.SelectedPath;
+                }
+            }
+        }
+
+        #region Diagnóstico de Prerrequisitos
+
+        private void VerificarPrerrequisitos()
+        {
+            // 1. Verificar .NET Framework 4.8
+            try
+            {
+                using (RegistryKey ndpKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full"))
+                {
+                    if (ndpKey != null && ndpKey.GetValue("Release") != null)
+                    {
+                        int releaseKey = (int)ndpKey.GetValue("Release");
+                        _net48Instalado = (releaseKey >= 528040);
+                    }
+                }
+            }
+            catch { _net48Instalado = false; }
+
+            if (_net48Instalado)
+            {
+                lblNetStatus.Text = "✓ Instalado";
+                lblNetStatus.ForeColor = Color.FromArgb(16, 185, 129);
+                picNet.ForeColor = Color.FromArgb(16, 185, 129);
+                btnInstalarNet.Visible = false;
+            }
+            else
+            {
+                lblNetStatus.Text = "✗ No detectado";
+                lblNetStatus.ForeColor = Color.FromArgb(239, 68, 68);
+                picNet.ForeColor = Color.FromArgb(239, 68, 68);
+                btnInstalarNet.Visible = true;
+            }
+
+            // 2. Verificar Visual C++ 2015-2022 (x86)
+            try
+            {
+                using (RegistryKey vcKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\X86") ??
+                                         Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\VisualStudio\14.0\VC\Runtimes\X86"))
+                {
+                    if (vcKey != null && vcKey.GetValue("Installed") != null)
+                    {
+                        _vcInstalado = Convert.ToInt32(vcKey.GetValue("Installed")) == 1;
+                    }
+                }
+            }
+            catch { _vcInstalado = false; }
+
+            if (_vcInstalado)
+            {
+                lblVcStatus.Text = "✓ Instalado";
+                lblVcStatus.ForeColor = Color.FromArgb(16, 185, 129);
+                picVC.ForeColor = Color.FromArgb(16, 185, 129);
+                btnInstalarVC.Visible = false;
+            }
+            else
+            {
+                lblVcStatus.Text = "✗ Faltante (Requerido)";
+                lblVcStatus.ForeColor = Color.FromArgb(245, 158, 11);
+                picVC.ForeColor = Color.FromArgb(245, 158, 11);
+                btnInstalarVC.Visible = true;
+            }
+        }
+
+        private void btnInstalarNet_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start("https://go.microsoft.com/fwlink/?linkid=2088631");
+            }
+            catch { }
+        }
+
+        private async void btnInstalarVC_Click(object sender, EventArgs e)
+        {
+            btnInstalarVC.Enabled = false;
+            btnInstalarVC.Text = "Instalando...";
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    string tempFile = Path.Combine(Path.GetTempPath(), "vc_redist.x86.exe");
+                    using (var wc = new System.Net.WebClient())
+                    {
+                        System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                        wc.DownloadFile("https://aka.ms/vs/17/release/vc_redist.x86.exe", tempFile);
+                    }
+
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = tempFile,
+                        Arguments = "/install /quiet /norestart",
+                        UseShellExecute = true,
+                        Verb = "runas"
+                    };
+                    var p = Process.Start(psi);
+                    p.WaitForExit(60000);
+                }
+                catch { }
+            });
+
+            VerificarPrerrequisitos();
+            btnInstalarVC.Enabled = true;
+        }
+
+        #endregion
+
+        #region Proceso de Instalación
+
+        private async void EjecutarInstalacionAsync()
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                    string sourceDir = Path.Combine(baseDir, @"..\..\Sistema.Presentacion\bin\x86\Debug");
+                    if (!Directory.Exists(sourceDir)) sourceDir = Path.Combine(baseDir, @"..\..\Sistema.Presentacion\bin\x86\Release");
+                    if (!Directory.Exists(sourceDir)) sourceDir = baseDir; // Si corre instalado o standalone
+
+                    ReportarProgreso(5, "Creando directorio de instalación en: " + _rutaInstalacion);
+                    if (!Directory.Exists(_rutaInstalacion))
+                    {
+                        Directory.CreateDirectory(_rutaInstalacion);
+                    }
+
+                    // 1. Copiar Archivos Binarios y DLLs
+                    ReportarProgreso(15, "Copiando ejecutables y librerías del sistema...");
+                    if (Directory.Exists(sourceDir))
+                    {
+                        CopiarArchivosConProgreso(sourceDir, _rutaInstalacion, 15, 60);
+                    }
+
+                    // 2. Copiar SDK ZKTeco
+                    ReportarProgreso(65, "Copiando SDK nativo ZKTeco...");
+                    string sdkDir = Path.Combine(baseDir, @"..\..\SDK");
+                    if (!Directory.Exists(sdkDir)) sdkDir = Path.Combine(baseDir, "SDK");
+                    if (Directory.Exists(sdkDir))
+                    {
+                        foreach (string file in Directory.GetFiles(sdkDir))
+                        {
+                            File.Copy(file, Path.Combine(_rutaInstalacion, Path.GetFileName(file)), true);
+                        }
+                    }
+
+                    // 3. Copiar Recursos y Logotipos
+                    ReportarProgreso(75, "Copiando recursos institucionales y plantillas de reportes...");
+                    string logoDir = Path.Combine(baseDir, @"..\..\Logotipos");
+                    if (!Directory.Exists(logoDir)) logoDir = Path.Combine(baseDir, "Logotipos");
+                    if (Directory.Exists(logoDir))
+                    {
+                        string destLogo = Path.Combine(_rutaInstalacion, "Logotipos");
+                        if (!Directory.Exists(destLogo)) Directory.CreateDirectory(destLogo);
+                        foreach (string file in Directory.GetFiles(logoDir))
+                        {
+                            File.Copy(file, Path.Combine(destLogo, Path.GetFileName(file)), true);
+                        }
+                    }
+
+                    // 4. Registrar Librería COM zkemkeeper.dll en Windows
+                    ReportarProgreso(82, "Registrando librerías biométricas en Windows (regsvr32 zkemkeeper.dll)...");
+                    string zkemDll = Path.Combine(_rutaInstalacion, "zkemkeeper.dll");
+                    if (File.Exists(zkemDll))
+                    {
+                        try
+                        {
+                            var regProc = Process.Start(new ProcessStartInfo
+                            {
+                                FileName = "regsvr32.exe",
+                                Arguments = string.Format("/s \"{0}\"", zkemDll),
+                                CreateNoWindow = true,
+                                UseShellExecute = false
+                            });
+                            regProc.WaitForExit(5000);
+                        }
+                        catch { }
+                    }
+
+                    // 5. Crear Accesos Directos
+                    ReportarProgreso(90, "Creando accesos directos...");
+                    string targetExe = Path.Combine(_rutaInstalacion, "Sistema.Presentacion.exe");
+
+                    if (chkEscritorio.Checked)
+                    {
+                        CrearAccesoDirecto(
+                            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Sistema de Asistencias ZKTeco.lnk"),
+                            targetExe,
+                            _rutaInstalacion,
+                            "Sistema de Asistencias y Control Biométrico - Hospital de El Progreso"
+                        );
+                    }
+
+                    if (chkMenuInicio.Checked)
+                    {
+                        string menuFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonPrograms), "Hospital de El Progreso");
+                        if (!Directory.Exists(menuFolder)) Directory.CreateDirectory(menuFolder);
+                        CrearAccesoDirecto(
+                            Path.Combine(menuFolder, "Sistema de Asistencias ZKTeco.lnk"),
+                            targetExe,
+                            _rutaInstalacion,
+                            "Sistema de Asistencias y Control Biométrico - Hospital de El Progreso"
+                        );
+                    }
+
+                    // 6. Instalar Servicio de Windows 24/7 si se solicitó
+                    if (chkServicioWindows.Checked)
+                    {
+                        ReportarProgreso(95, "Instalando y activando Servicio de Windows 24/7 en segundo plano...");
+                        string serviceExe = Path.Combine(_rutaInstalacion, "Sistema.ServicioWindows.exe");
+                        if (File.Exists(serviceExe))
+                        {
+                            try
+                            {
+                                Process.Start(new ProcessStartInfo
+                                {
+                                    FileName = "sc.exe",
+                                    Arguments = string.Format("create ZKTecoHospitalElProgresoService binPath= \"{0}\" start= auto displayname= \"Servicio de Asistencias ZKTeco - Hospital de El Progreso\"", serviceExe),
+                                    CreateNoWindow = true,
+                                    UseShellExecute = false
+                                })?.WaitForExit(5000);
+
+                                Process.Start(new ProcessStartInfo
+                                {
+                                    FileName = "sc.exe",
+                                    Arguments = "start ZKTecoHospitalElProgresoService",
+                                    CreateNoWindow = true,
+                                    UseShellExecute = false
+                                })?.WaitForExit(5000);
+                            }
+                            catch { }
+                        }
+                    }
+
+                    ReportarProgreso(100, "¡Instalación completada exitosamente!");
+                });
+
+                await Task.Delay(800);
+                MostrarPaso(5);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ocurrió un error durante la instalación: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MostrarPaso(3);
+            }
+        }
+
+        private void CopiarArchivosConProgreso(string source, string dest, int pctInicio, int pctFin)
+        {
+            string[] files = Directory.GetFiles(source, "*.*", SearchOption.AllDirectories);
+            int total = files.Length;
+            int contador = 0;
+
+            foreach (string file in files)
+            {
+                string rel = file.Substring(source.Length).TrimStart('\\', '/');
+                string destFile = Path.Combine(dest, rel);
+                string destFolder = Path.GetDirectoryName(destFile);
+
+                if (!Directory.Exists(destFolder))
+                    Directory.CreateDirectory(destFolder);
+
+                File.Copy(file, destFile, true);
+                contador++;
+
+                int pct = pctInicio + (int)((contador / (double)total) * (pctFin - pctInicio));
+                ReportarProgreso(pct, "Copiando: " + Path.GetFileName(file));
+            }
+        }
+
+        private void ReportarProgreso(int porcentaje, string detalle)
+        {
+            if (this.IsDisposed) return;
+            this.BeginInvoke(new Action(() =>
+            {
+                progressBarInstalacion.Value = Math.Max(0, Math.Min(100, porcentaje));
+                lblPorcentaje.Text = porcentaje + "%";
+                lblDetalleProgreso.Text = detalle;
+            }));
+        }
+
+        private void CrearAccesoDirecto(string rutaLnk, string targetPath, string workingDir, string descripcion)
+        {
+            try
+            {
+                Type shellType = Type.GetTypeFromProgID("WScript.Shell");
+                dynamic shell = Activator.CreateInstance(shellType);
+                dynamic shortcut = shell.CreateShortcut(rutaLnk);
+                shortcut.TargetPath = targetPath;
+                shortcut.WorkingDirectory = workingDir;
+                shortcut.Description = descripcion;
+                shortcut.Save();
+                Marshal.FinalReleaseComObject(shortcut);
+                Marshal.FinalReleaseComObject(shell);
+            }
+            catch { }
+        }
+
+        #endregion
+    }
+}

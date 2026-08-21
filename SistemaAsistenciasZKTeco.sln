@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sistema.ServicioWindows", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sistema.Actualizador", "Sistema.Actualizador\Sistema.Actualizador.csproj", "{5A7B8C9D-1E2F-4A3B-9C8D-7E6F5A4B3C2D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sistema.Instalador", "Sistema.Instalador\Sistema.Instalador.csproj", "{9F8E7D6C-5B4A-3C2D-1E0F-9A8B7C6D5E4F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -44,6 +46,10 @@ Global
 		{5A7B8C9D-1E2F-4A3B-9C8D-7E6F5A4B3C2D}.Debug|x86.Build.0 = Debug|x86
 		{5A7B8C9D-1E2F-4A3B-9C8D-7E6F5A4B3C2D}.Release|x86.ActiveCfg = Release|x86
 		{5A7B8C9D-1E2F-4A3B-9C8D-7E6F5A4B3C2D}.Release|x86.Build.0 = Release|x86
+		{9F8E7D6C-5B4A-3C2D-1E0F-9A8B7C6D5E4F}.Debug|x86.ActiveCfg = Debug|x86
+		{9F8E7D6C-5B4A-3C2D-1E0F-9A8B7C6D5E4F}.Debug|x86.Build.0 = Debug|x86
+		{9F8E7D6C-5B4A-3C2D-1E0F-9A8B7C6D5E4F}.Release|x86.ActiveCfg = Release|x86
+		{9F8E7D6C-5B4A-3C2D-1E0F-9A8B7C6D5E4F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
