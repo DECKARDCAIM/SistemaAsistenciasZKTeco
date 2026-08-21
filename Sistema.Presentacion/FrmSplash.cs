@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sistema.Datos;
@@ -130,30 +131,48 @@ namespace Sistema.Presentacion
                 if (taskTerminada == taskActualizacion)
                 {
                     Sistema.Negocio.InfoVersion info = await taskActualizacion;
-                    if (info.HayActualizacion)
+                    if (info != null && info.HayActualizacion && !string.IsNullOrEmpty(info.VersionNueva))
                     {
-                        timerProgress.Stop();
-                        lblStatus.Text = string.Format("Nueva versión v{0} disponible. Descargando...", info.VersionNueva);
-                        lblStatus.ForeColor = System.Drawing.Color.FromArgb(255, 183, 77);
+                        string markerFile = Path.Combine(Path.GetTempPath(), "zkteco_last_update_try.txt");
+                        string lastTry = "";
+                        try { if (File.Exists(markerFile)) lastTry = File.ReadAllText(markerFile).Trim(); } catch { }
 
-                        var progreso = new Progress<Sistema.Negocio.ProgresoDescarga>(p =>
+                        // Si no hemos intentado actualizar a esta misma versión recientemente, proceder
+                        if (!lastTry.Equals(info.VersionNueva, StringComparison.OrdinalIgnoreCase))
                         {
-                            progressBar.Value = Math.Min(100, Math.Max(0, p.Porcentaje));
-                            lblStatus.Text = string.Format("Descargando actualización v{0}... {1}% ({2} MB/s)", info.VersionNueva, p.Porcentaje, p.VelocidadMBs);
-                        });
+                            try { File.WriteAllText(markerFile, info.VersionNueva); } catch { }
 
-                        string zipPath = await actualizador.DescargarActualizacionAsync(info, progreso);
+                            timerProgress.Stop();
+                            lblStatus.Text = string.Format("Nueva versión v{0} disponible. Descargando...", info.VersionNueva);
+                            lblStatus.ForeColor = System.Drawing.Color.FromArgb(255, 183, 77);
 
-                        lblStatus.Text = "¡Actualización descargada! Aplicando nueva versión...";
-                        progressBar.Value = 100;
-                        await Task.Delay(600);
+                            var progreso = new Progress<Sistema.Negocio.ProgresoDescarga>(p =>
+                            {
+                                progressBar.Value = Math.Min(100, Math.Max(0, p.Porcentaje));
+                                lblStatus.Text = string.Format("Descargando actualización v{0}... {1}%", info.VersionNueva, p.Porcentaje);
+                            });
 
-                        actualizador.EjecutarActualizador(zipPath, info.VersionNueva);
+                            try
+                            {
+                                string zipPath = await actualizador.DescargarActualizacionAsync(info, progreso);
 
-                        // Salir del splash para que el actualizador reemplace los archivos
-                        this.DialogResult = DialogResult.Abort;
-                        this.Close();
-                        return;
+                                lblStatus.Text = "¡Actualización descargada! Aplicando nueva versión...";
+                                progressBar.Value = 100;
+                                await Task.Delay(600);
+
+                                actualizador.EjecutarActualizador(zipPath, info.VersionNueva);
+
+                                // Salir del splash para que el actualizador reemplace los archivos
+                                this.DialogResult = DialogResult.Abort;
+                                this.Close();
+                                return;
+                            }
+                            catch
+                            {
+                                // Si falló la descarga o permisos, no bloquear el acceso al sistema
+                                timerProgress.Start();
+                            }
+                        }
                     }
                 }
             }
