@@ -1,0 +1,8 @@
+{
+  "version": "1.0.1",
+  "titulo": "Actualización v1.0.1 - Hospital de El Progreso",
+  "fecha": "2026-08-21",
+  "notas": "• Icono institucional oficial integrado en alta resolución.\n• Asistente de instalación gráfico nativo de Windows.\n• Vaciado seguro de memoria de relojes biométricos tras guardar en BD.\n• Aceleración de consultas con capa de caché Redis.",
+  "url_descarga": "https://raw.githubusercontent.com/DECKARDCAIM/SistemaAsistenciasZKTeco/master/Instalador/Update_latest.zip",
+  "archivo": "Update_latest.zip"
+}
