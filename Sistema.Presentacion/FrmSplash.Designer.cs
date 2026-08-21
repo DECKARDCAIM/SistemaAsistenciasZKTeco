@@ -53,20 +53,20 @@ namespace Sistema.Presentacion
             // 
             // lblVersion
             // 
-            this.lblVersion.Font = new System.Drawing.Font("Segoe UI", 8.5F);
+            this.lblVersion.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(150)))), ((int)(((byte)(180)))));
-            this.lblVersion.Location = new System.Drawing.Point(450, 310);
+            this.lblVersion.Location = new System.Drawing.Point(440, 310);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(135, 18);
+            this.lblVersion.Size = new System.Drawing.Size(145, 18);
             this.lblVersion.TabIndex = 5;
-            this.lblVersion.Text = "Versión 2.0 Enterprise";
+            this.lblVersion.Text = "v1.0.1 - Hospital de El Progreso";
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblStatus
             // 
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(190)))), ((int)(((byte)(220)))));
-            this.lblStatus.Location = new System.Drawing.Point(40, 260);
+            this.lblStatus.Location = new System.Drawing.Point(40, 255);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(520, 20);
             this.lblStatus.TabIndex = 4;
@@ -81,7 +81,7 @@ namespace Sistema.Presentacion
             this.progressBar.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.progressBar.ForeBackColor = System.Drawing.Color.Empty;
             this.progressBar.ForeColor = System.Drawing.Color.White;
-            this.progressBar.Location = new System.Drawing.Point(40, 285);
+            this.progressBar.Location = new System.Drawing.Point(40, 280);
             this.progressBar.Name = "progressBar";
             this.progressBar.ShowMaximun = false;
             this.progressBar.ShowValue = RJCodeUI_M1.RJControls.TextPosition.None;
@@ -93,36 +93,37 @@ namespace Sistema.Presentacion
             // 
             // lblSubtitle
             // 
-            this.lblSubtitle.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblSubtitle.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(180)))), ((int)(((byte)(216)))));
-            this.lblSubtitle.Location = new System.Drawing.Point(20, 195);
+            this.lblSubtitle.Location = new System.Drawing.Point(20, 185);
             this.lblSubtitle.Name = "lblSubtitle";
             this.lblSubtitle.Size = new System.Drawing.Size(560, 25);
             this.lblSubtitle.TabIndex = 2;
-            this.lblSubtitle.Text = "ZKTeco Biometric Time & Attendance System";
+            this.lblSubtitle.Text = "Hospital de El Progreso - Control Biométrico de Asistencias";
             this.lblSubtitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblTitle
             // 
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(20, 155);
+            this.lblTitle.Location = new System.Drawing.Point(20, 150);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(560, 35);
+            this.lblTitle.Size = new System.Drawing.Size(560, 32);
             this.lblTitle.TabIndex = 1;
-            this.lblTitle.Text = "CONTROL DE ASISTENCIAS";
+            this.lblTitle.Text = "SISTEMA DE ASISTENCIAS ZKTECO";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // picLogo
             // 
             this.picLogo.BackColor = System.Drawing.Color.Transparent;
-            this.picLogo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(180)))), ((int)(((byte)(216)))));
-            this.picLogo.IconChar = FontAwesome.Sharp.IconChar.Fingerprint;
+            this.picLogo.ForeColor = System.Drawing.Color.White;
+            this.picLogo.IconChar = FontAwesome.Sharp.IconChar.None;
             this.picLogo.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.picLogo.IconSize = 80;
-            this.picLogo.Location = new System.Drawing.Point(260, 50);
+            this.picLogo.IconSize = 1;
+            this.picLogo.Location = new System.Drawing.Point(150, 25);
             this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(80, 80);
+            this.picLogo.Size = new System.Drawing.Size(300, 115);
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picLogo.TabIndex = 0;
             this.picLogo.TabStop = false;
             // 
