@@ -88,12 +88,15 @@ namespace Sistema.Actualizador
                     throw new Exception("El archivo principal " + exeName + " no se encontró tras la extracción.");
                 }
 
-                // Guardar último commit aplicado
+                // Guardar version.json actualizado en el directorio de la app
                 if (!string.IsNullOrEmpty(commitSha))
                 {
                     try
                     {
-                        File.WriteAllText(Path.Combine(targetDir, "last_commit.txt"), commitSha);
+                        string versionJson = string.Format(
+                            "{{\"version\":\"{0}\",\"titulo\":\"Version {0}\",\"fecha\":\"{1}\"}}",
+                            commitSha, DateTime.Now.ToString("yyyy-MM-dd"));
+                        File.WriteAllText(Path.Combine(targetDir, "version.json"), versionJson);
                     }
                     catch { }
                 }
@@ -217,14 +220,23 @@ namespace Sistema.Actualizador
 
         private static void AplicarActualizacion(string zipPath, string targetDir)
         {
+            string currentExeName = Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName);
+
             using (ZipArchive archive = ZipFile.OpenRead(zipPath))
             {
                 foreach (ZipArchiveEntry entry in archive.Entries)
                 {
                     if (string.IsNullOrEmpty(entry.Name)) continue;
 
+                    // Nunca intentar sobreescribir el propio Actualizador que está en ejecución
+                    if (entry.Name.Equals(currentExeName, StringComparison.OrdinalIgnoreCase) ||
+                        entry.Name.Equals("Actualizador.exe", StringComparison.OrdinalIgnoreCase) ||
+                        entry.Name.Equals("Actualizador.pdb", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
                     string entryPath = entry.FullName;
-                    // Si el zip tiene prefijo de carpeta (ej. ArchivosApp/ o repo-master/), limpiarlo si corresponde
                     if (entryPath.StartsWith("ArchivosApp/", StringComparison.OrdinalIgnoreCase))
                     {
                         entryPath = entryPath.Substring("ArchivosApp/".Length);
@@ -244,12 +256,17 @@ namespace Sistema.Actualizador
                         try
                         {
                             entry.ExtractToFile(fullDestPath, true);
+                            Console.WriteLine("      OK: " + entry.Name);
                             break;
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             reintentos--;
-                            if (reintentos == 0) throw;
+                            if (reintentos == 0)
+                            {
+                                Console.WriteLine("      ADVERTENCIA: No se pudo actualizar " + entry.Name + ": " + ex.Message);
+                                // No lanzar excepción para archivos no críticos, continuar con los demás
+                            }
                             Thread.Sleep(500);
                         }
                     }
