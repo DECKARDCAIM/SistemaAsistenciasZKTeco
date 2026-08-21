@@ -21,26 +21,40 @@ namespace Sistema.Actualizador
             string targetDir = AppDomain.CurrentDomain.BaseDirectory;
             string packagePath = "";
             string exeName = "Sistema.Presentacion.exe";
+            string commitSha = "";
             int waitPid = 0;
 
-            for (int i = 0; i < args.Length; i++)
+            // Soporte para argumentos posicionales: package, target, exe, pid, sha
+            if (args.Length > 0 && !args[0].StartsWith("-"))
             {
-                if (args[i].Equals("--target", StringComparison.OrdinalIgnoreCase) && i + 1 < args.Length)
-                    targetDir = args[++i];
-                else if (args[i].Equals("--package", StringComparison.OrdinalIgnoreCase) && i + 1 < args.Length)
-                    packagePath = args[++i];
-                else if (args[i].Equals("--exe", StringComparison.OrdinalIgnoreCase) && i + 1 < args.Length)
-                    exeName = args[++i];
-                else if (args[i].Equals("--pid", StringComparison.OrdinalIgnoreCase) && i + 1 < args.Length)
-                    int.TryParse(args[++i], out waitPid);
+                packagePath = args[0];
+                if (args.Length > 1) targetDir = args[1];
+                if (args.Length > 2) exeName = Path.GetFileName(args[2]);
+                if (args.Length > 3) int.TryParse(args[3], out waitPid);
+                if (args.Length > 4) commitSha = args[4];
+            }
+            else
+            {
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (args[i].Equals("--target", StringComparison.OrdinalIgnoreCase) && i + 1 < args.Length)
+                        targetDir = args[++i];
+                    else if (args[i].Equals("--package", StringComparison.OrdinalIgnoreCase) && i + 1 < args.Length)
+                        packagePath = args[++i];
+                    else if (args[i].Equals("--exe", StringComparison.OrdinalIgnoreCase) && i + 1 < args.Length)
+                        exeName = args[++i];
+                    else if (args[i].Equals("--pid", StringComparison.OrdinalIgnoreCase) && i + 1 < args.Length)
+                        int.TryParse(args[++i], out waitPid);
+                    else if (args[i].Equals("--sha", StringComparison.OrdinalIgnoreCase) && i + 1 < args.Length)
+                        commitSha = args[++i];
+                }
             }
 
             if (string.IsNullOrEmpty(packagePath) || !File.Exists(packagePath))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\n[ERROR] No se especificó un paquete de actualización válido.");
+                Console.WriteLine("\n[ERROR] No se especificó un paquete de actualización válido: " + packagePath);
                 Console.ResetColor();
-                Console.WriteLine("Uso: Actualizador.exe --target <dir> --package <archivo.zip> [--exe <nombre.exe>] [--pid <id>]");
                 Thread.Sleep(3000);
                 return 1;
             }
@@ -72,6 +86,16 @@ namespace Sistema.Actualizador
                 if (!File.Exists(targetExe))
                 {
                     throw new Exception("El archivo principal " + exeName + " no se encontró tras la extracción.");
+                }
+
+                // Guardar último commit aplicado
+                if (!string.IsNullOrEmpty(commitSha))
+                {
+                    try
+                    {
+                        File.WriteAllText(Path.Combine(targetDir, "last_commit.txt"), commitSha);
+                    }
+                    catch { }
                 }
 
                 // 5. Finalizar exitosamente
@@ -175,7 +199,6 @@ namespace Sistema.Actualizador
             foreach (string file in Directory.GetFiles(sourceDir))
             {
                 string fileName = Path.GetFileName(file);
-                // No respaldar el propio archivo de paquete ni backups viejos
                 if (fileName.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) || fileName.StartsWith("_backup"))
                     continue;
 
@@ -198,10 +221,16 @@ namespace Sistema.Actualizador
             {
                 foreach (ZipArchiveEntry entry in archive.Entries)
                 {
-                    // Evitar directorios
                     if (string.IsNullOrEmpty(entry.Name)) continue;
 
-                    string fullDestPath = Path.Combine(targetDir, entry.FullName);
+                    string entryPath = entry.FullName;
+                    // Si el zip tiene prefijo de carpeta (ej. ArchivosApp/ o repo-master/), limpiarlo si corresponde
+                    if (entryPath.StartsWith("ArchivosApp/", StringComparison.OrdinalIgnoreCase))
+                    {
+                        entryPath = entryPath.Substring("ArchivosApp/".Length);
+                    }
+
+                    string fullDestPath = Path.Combine(targetDir, entryPath);
                     string destDir = Path.GetDirectoryName(fullDestPath);
 
                     if (!Directory.Exists(destDir))
@@ -209,7 +238,6 @@ namespace Sistema.Actualizador
                         Directory.CreateDirectory(destDir);
                     }
 
-                    // Reintentar copia por si algún archivo tarda en liberarse
                     int reintentos = 5;
                     while (reintentos > 0)
                     {

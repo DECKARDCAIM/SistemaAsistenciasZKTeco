@@ -1,10 +1,10 @@
 using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Sistema.Negocio
@@ -13,12 +13,12 @@ namespace Sistema.Negocio
     {
         public string VersionActual { get; set; }
         public string VersionNueva { get; set; }
-        public bool HayActualizacion { get; set; }
         public string TituloRelease { get; set; }
         public string NotasVersion { get; set; }
         public string UrlDescarga { get; set; }
-        public long TamanoBytes { get; set; }
+        public bool HayActualizacion { get; set; }
         public string NombreArchivo { get; set; }
+        public string CommitSha { get; set; }
     }
 
     public class ProgresoDescarga
@@ -36,29 +36,45 @@ namespace Sistema.Negocio
 
         public ActualizadorService(string repoOwner = null, string repoName = null)
         {
-            // Leer de App.config o valores por defecto
             _repoOwner = repoOwner ?? ConfigurationManager.AppSettings["GitHub_RepoOwner"] ?? "DECKARDCAIM";
             _repoName = repoName ?? ConfigurationManager.AppSettings["GitHub_RepoName"] ?? "SistemaAsistenciasZKTeco";
         }
 
-        public string ObtenerVersionActual()
+        public string ObtenerCommitActual()
         {
+            try
+            {
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "last_commit.txt");
+                if (File.Exists(path))
+                {
+                    string sha = File.ReadAllText(path).Trim();
+                    if (!string.IsNullOrEmpty(sha))
+                    {
+                        return sha;
+                    }
+                }
+            }
+            catch { }
+
+            // Fallback a version de ensamblado
             Version v = Assembly.GetExecutingAssembly().GetName().Version;
             return string.Format("{0}.{1}.{2}", v.Major, v.Minor, v.Build);
         }
 
         public async Task<InfoVersion> VerificarActualizacionAsync()
         {
+            string commitActual = ObtenerCommitActual();
             var info = new InfoVersion
             {
-                VersionActual = ObtenerVersionActual(),
+                VersionActual = commitActual.Length > 7 ? commitActual.Substring(0, 7) : commitActual,
+                CommitSha = commitActual,
                 HayActualizacion = false
             };
 
             try
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-                string apiUrl = string.Format("https://api.github.com/repos/{0}/{1}/releases/latest", _repoOwner, _repoName);
+                string apiUrl = string.Format("https://api.github.com/repos/{0}/{1}/commits/master", _repoOwner, _repoName);
 
                 using (var client = new WebClient())
                 {
@@ -67,153 +83,122 @@ namespace Sistema.Negocio
 
                     string json = await client.DownloadStringTaskAsync(new Uri(apiUrl));
 
-                    // Extraer tag_name (ej: "v1.0.1" o "1.0.1")
-                    var matchTag = Regex.Match(json, "\"tag_name\"\\s*:\\s*\"([^\"]+)\"");
-                    if (matchTag.Success)
+                    // Extraer SHA del commit
+                    var matchSha = Regex.Match(json, "\"sha\"\\s*:\\s*\"([a-f0-9]{40})\"");
+                    if (matchSha.Success)
                     {
-                        string rawTag = matchTag.Groups[1].Value.TrimStart('v', 'V');
-                        info.VersionNueva = rawTag;
+                        string shaRemoto = matchSha.Groups[1].Value;
+                        string shortSha = shaRemoto.Substring(0, 7);
+                        info.CommitSha = shaRemoto;
+                        info.VersionNueva = shortSha;
 
-                        // Extraer nombre de la release
-                        var matchName = Regex.Match(json, "\"name\"\\s*:\\s*\"([^\"]+)\"");
-                        info.TituloRelease = matchName.Success ? matchName.Groups[1].Value : "Actualización " + rawTag;
+                        // Extraer mensaje del commit
+                        var matchMsg = Regex.Match(json, "\"message\"\\s*:\\s*\"([^\"]+)\"");
+                        string mensaje = matchMsg.Success ? Regex.Unescape(matchMsg.Groups[1].Value) : "Actualización de la rama master";
 
-                        // Extraer notas de versión (body)
-                        var matchBody = Regex.Match(json, "\"body\"\\s*:\\s*\"([^\"]*)\"");
-                        if (matchBody.Success)
+                        // Extraer fecha
+                        var matchDate = Regex.Match(json, "\"date\"\\s*:\\s*\"([^\"]+)\"");
+                        string fecha = matchDate.Success ? matchDate.Groups[1].Value : "";
+
+                        info.TituloRelease = string.Format("Últimos cambios en master ({0})", shortSha);
+                        info.NotasVersion = string.Format("Commit: {0}\nFecha: {1}\n\nCambios:\n{2}", shortSha, fecha, mensaje);
+                        info.UrlDescarga = string.Format("https://github.com/{0}/{1}/raw/master/Instalador/Update_latest.zip", _repoOwner, _repoName);
+                        info.NombreArchivo = "Update_latest.zip";
+
+                        // Si el commit local es diferente del remoto, hay actualización
+                        if (!string.Equals(commitActual, shaRemoto, StringComparison.OrdinalIgnoreCase) &&
+                            !string.Equals(info.VersionActual, shortSha, StringComparison.OrdinalIgnoreCase))
                         {
-                            info.NotasVersion = Regex.Unescape(matchBody.Groups[1].Value);
+                            info.HayActualizacion = true;
                         }
-
-                        // Extraer URL de descarga del asset (.zip o .exe)
-                        var matchUrl = Regex.Match(json, "\"browser_download_url\"\\s*:\\s*\"([^\"]+\\.(zip|exe))\"");
-                        if (matchUrl.Success)
-                        {
-                            info.UrlDescarga = matchUrl.Groups[1].Value;
-                            info.NombreArchivo = Path.GetFileName(info.UrlDescarga);
-                        }
-                        else
-                        {
-                            // Si no hay asset zip adjunto, usar zipballUrl
-                            var matchZipball = Regex.Match(json, "\"zipball_url\"\\s*:\\s*\"([^\"]+)\"");
-                            if (matchZipball.Success)
-                            {
-                                info.UrlDescarga = matchZipball.Groups[1].Value;
-                                info.NombreArchivo = string.Format("Update_v{0}.zip", rawTag);
-                            }
-                        }
-
-                        // Comparar versiones
-                        info.HayActualizacion = EsVersionSuperior(rawTag, info.VersionActual);
                     }
-                }
-            }
-            catch (WebException wex)
-            {
-                if (wex.Response is HttpWebResponse resp && resp.StatusCode == HttpStatusCode.NotFound)
-                {
-                    // No hay releases publicadas aún
-                    info.HayActualizacion = false;
-                }
-                else
-                {
-                    throw new Exception("No se pudo contactar al servidor de actualizaciones de GitHub: " + wex.Message);
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al verificar actualizaciones: " + ex.Message);
+                throw new Exception("Error al consultar la rama master en GitHub: " + ex.Message);
             }
 
             return info;
         }
 
-        public async Task<string> DescargarActualizacionAsync(
-            string urlDescarga, 
-            string nombreArchivo, 
-            IProgress<ProgresoDescarga> progreso, 
-            CancellationToken ct)
+        public async Task<string> DescargarActualizacionAsync(InfoVersion info, IProgress<ProgresoDescarga> progreso = null)
         {
+            if (string.IsNullOrEmpty(info.UrlDescarga))
+                throw new InvalidOperationException("No se proporcionó una URL de descarga válida.");
+
             string tempDir = Path.Combine(Path.GetTempPath(), "SistemaAsistencias_Updates");
             if (!Directory.Exists(tempDir))
-            {
                 Directory.CreateDirectory(tempDir);
-            }
 
-            string destinoArchivo = Path.Combine(tempDir, nombreArchivo);
-            if (File.Exists(destinoArchivo))
-            {
-                try { File.Delete(destinoArchivo); } catch { }
-            }
+            string targetFile = Path.Combine(tempDir, info.NombreArchivo ?? "Update_latest.zip");
+            if (File.Exists(targetFile))
+                File.Delete(targetFile);
 
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+            var stopwatch = Stopwatch.StartNew();
+            long totalBytes = -1;
 
-            var request = (HttpWebRequest)WebRequest.Create(urlDescarga);
+            var request = (HttpWebRequest)WebRequest.Create(info.UrlDescarga);
             request.UserAgent = "SistemaAsistenciasZKTeco-Updater";
-            request.Timeout = 60000;
+            request.AllowAutoRedirect = true;
 
             using (var response = await request.GetResponseAsync())
-            using (var responseStream = response.GetResponseStream())
-            using (var fileStream = new FileStream(destinoArchivo, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                long totalBytes = response.ContentLength;
-                byte[] buffer = new byte[81920]; // 80 KB
-                long bytesLeidosTotal = 0;
-                int bytesLeidos;
+                totalBytes = response.ContentLength;
 
-                var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-
-                while ((bytesLeidos = await responseStream.ReadAsync(buffer, 0, buffer.Length, ct)) > 0)
+                using (var stream = response.GetResponseStream())
+                using (var fileStream = new FileStream(targetFile, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
                 {
-                    if (ct.IsCancellationRequested)
+                    byte[] buffer = new byte[8192];
+                    long totalRead = 0;
+                    int bytesRead;
+
+                    while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                     {
-                        fileStream.Close();
-                        try { File.Delete(destinoArchivo); } catch { }
-                        throw new OperationCanceledException();
+                        await fileStream.WriteAsync(buffer, 0, bytesRead);
+                        totalRead += bytesRead;
+
+                        if (progreso != null)
+                        {
+                            double elapsedSeconds = stopwatch.Elapsed.TotalSeconds;
+                            double speedMBs = elapsedSeconds > 0 ? (totalRead / (1024.0 * 1024.0)) / elapsedSeconds : 0;
+                            int pct = totalBytes > 0 ? (int)((totalRead * 100) / totalBytes) : 0;
+
+                            progreso.Report(new ProgresoDescarga
+                            {
+                                BytesRecibidos = totalRead,
+                                BytesTotales = totalBytes,
+                                Porcentaje = pct,
+                                VelocidadMBs = Math.Round(speedMBs, 2)
+                            });
+                        }
                     }
-
-                    await fileStream.WriteAsync(buffer, 0, bytesLeidos, ct);
-                    bytesLeidosTotal += bytesLeidos;
-
-                    double segundos = stopwatch.Elapsed.TotalSeconds;
-                    double velocidadMBs = segundos > 0 ? (bytesLeidosTotal / (1024.0 * 1024.0)) / segundos : 0;
-                    int pct = totalBytes > 0 ? (int)((bytesLeidosTotal / (double)totalBytes) * 100) : 50;
-
-                    progreso?.Report(new ProgresoDescarga
-                    {
-                        BytesRecibidos = bytesLeidosTotal,
-                        BytesTotales = totalBytes,
-                        Porcentaje = Math.Min(pct, 100),
-                        VelocidadMBs = velocidadMBs
-                    });
                 }
             }
 
-            return destinoArchivo;
+            return targetFile;
         }
 
-        private bool EsVersionSuperior(string versionNuevaStr, string versionActualStr)
+        public void EjecutarActualizador(string rutaZip, string commitSha = "")
         {
-            try
-            {
-                Version vNueva = NormalizarVersion(versionNuevaStr);
-                Version vActual = NormalizarVersion(versionActualStr);
-                return vNueva > vActual;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+            string appDir = AppDomain.CurrentDomain.BaseDirectory;
+            string actualizadorExe = Path.Combine(appDir, "Actualizador.exe");
 
-        private Version NormalizarVersion(string vStr)
-        {
-            vStr = Regex.Replace(vStr, @"[^\d.]", "");
-            string[] partes = vStr.Split('.');
-            if (partes.Length == 1) return new Version(int.Parse(partes[0]), 0, 0, 0);
-            if (partes.Length == 2) return new Version(int.Parse(partes[0]), int.Parse(partes[1]), 0, 0);
-            if (partes.Length == 3) return new Version(int.Parse(partes[0]), int.Parse(partes[1]), int.Parse(partes[2]), 0);
-            return new Version(vStr);
+            if (!File.Exists(actualizadorExe))
+                throw new FileNotFoundException("No se encontró el ejecutable del actualizador en: " + actualizadorExe);
+
+            int currentPid = Process.GetCurrentProcess().Id;
+            string mainExe = Assembly.GetEntryAssembly()?.Location ?? Path.Combine(appDir, "Sistema.Presentacion.exe");
+
+            var psi = new ProcessStartInfo
+            {
+                FileName = actualizadorExe,
+                Arguments = string.Format("\"{0}\" \"{1}\" \"{2}\" {3} \"{4}\"", rutaZip, appDir, mainExe, currentPid, commitSha),
+                UseShellExecute = true,
+                Verb = "runas"
+            };
+
+            Process.Start(psi);
         }
     }
 }

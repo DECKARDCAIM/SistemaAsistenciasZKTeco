@@ -82,6 +82,7 @@ xcopy "$(SolutionDir)Sistema.Presentacion\bin\$(Platform)\$(Configuration)\*.*" 
 copy /Y "$(SolutionDir)Sistema.ServicioWindows\bin\$(Platform)\$(Configuration)\Sistema.ServicioWindows.exe*" "$(SolutionDir)Instalador\ArchivosApp\" 2&gt;nul
 xcopy "$(SolutionDir)SDK\*.*" "$(SolutionDir)Instalador\ArchivosApp\" /Y /Q 2&gt;nul
 if exist "$(SolutionDir)Logotipos" xcopy "$(SolutionDir)Logotipos\*.*" "$(SolutionDir)Instalador\ArchivosApp\Logotipos\" /E /Y /I /Q 2&gt;nul
-if exist "$(SolutionDir)FormatosReportes" xcopy "$(SolutionDir)FormatosReportes\*.*" "$(SolutionDir)Instalador\ArchivosApp\FormatosReportes\" /E /Y /I /Q 2&gt;nul</PostBuildEvent>
+if exist "$(SolutionDir)FormatosReportes" xcopy "$(SolutionDir)FormatosReportes\*.*" "$(SolutionDir)Instalador\ArchivosApp\FormatosReportes\" /E /Y /I /Q 2&gt;nul
+powershell -Command "[System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem'); if (Test-Path '$(SolutionDir)Instalador\Update_latest.zip') { Remove-Item '$(SolutionDir)Instalador\Update_latest.zip' -Force }; [System.IO.Compression.ZipFile]::CreateFromDirectory('$(SolutionDir)Instalador\ArchivosApp', '$(SolutionDir)Instalador\Update_latest.zip')" 2&gt;nul</PostBuildEvent>
   </PropertyGroup>
 </Project>
