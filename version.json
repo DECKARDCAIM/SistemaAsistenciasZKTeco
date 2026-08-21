@@ -1,8 +1,8 @@
 {
-  "version": "1.0.5",
-  "titulo": "Actualizacion v1.0.5 - Hospital de El Progreso",
+  "version": "0.0.1",
+  "titulo": "Versión Inicial v0.0.1 - Hospital de El Progreso",
   "fecha": "2026-08-21",
-  "notas": "- Correccion en el paso de argumentos al Actualizador para guardar version.json de forma definitiva.\n- Descarga rapida en segundo plano y transicion fluida al Login tras actualizar.\n- Boton de Informacion del Sistema en la barra de titulos.",
+  "notas": "- Versión inicial de desarrollo v0.0.1.\n- Sistema de Control de Asistencias e Integración con Relojes Biométricos ZKTeco.\n- Correcciones de diseño, temas visuales modernos y alineación de interfaz.",
   "url_descarga": "https://raw.githubusercontent.com/DECKARDCAIM/SistemaAsistenciasZKTeco/master/Instalador/Update_latest.zip",
   "archivo": "Update_latest.zip"
 }

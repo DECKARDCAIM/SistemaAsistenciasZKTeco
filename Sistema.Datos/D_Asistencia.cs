@@ -114,6 +114,11 @@ namespace Sistema.Datos
                                 ELSE '--'
                             END AS horas_trabajadas,
                             CASE 
+                                WHEN lv.category_name IS NOT NULL THEN 
+                                    CASE 
+                                        WHEN lv.category_name ILIKE '%vacacion%' THEN '🌴 Vacaciones'
+                                        ELSE '📋 Permiso: ' || lv.category_name
+                                    END
                                 WHEN a.entrada IS NULL THEN 'No Marcó'
                                 WHEN COALESCE(ti.in_time, sd.in_time) IS NOT NULL 
                                      AND COALESCE(ti.in_time, sd.in_time) > '00:00:00'::time
@@ -122,21 +127,32 @@ namespace Sistema.Datos
                                         WHEN a.salida IS NOT NULL THEN 
                                             'Tardanza (' || FLOOR(EXTRACT(EPOCH FROM (a.entrada::time - COALESCE(ti.in_time, sd.in_time))) / 60)::text || ' min)'
                                         WHEN a.regreso_almuerzo IS NOT NULL THEN 
-                                            'Tardanza (' || FLOOR(EXTRACT(EPOCH FROM (a.entrada::time - COALESCE(ti.in_time, sd.in_time))) / 60)::text || ' min) - En Jornada'
+                                            'Tardanza (' || FLOOR(EXTRACT(EPOCH FROM (a.entrada::time - COALESCE(ti.in_time, sd.in_time))) / 60)::text || ' min) - En Turno'
                                         WHEN a.salida_almuerzo IS NOT NULL THEN 
                                             'Tardanza (' || FLOOR(EXTRACT(EPOCH FROM (a.entrada::time - COALESCE(ti.in_time, sd.in_time))) / 60)::text || ' min) - En Almuerzo'
                                         ELSE 
-                                            'Tardanza (' || FLOOR(EXTRACT(EPOCH FROM (a.entrada::time - COALESCE(ti.in_time, sd.in_time))) / 60)::text || ' min) - Solo Entrada'
+                                            'Tardanza (' || FLOOR(EXTRACT(EPOCH FROM (a.entrada::time - COALESCE(ti.in_time, sd.in_time))) / 60)::text || ' min) - En Turno'
                                     END
                                 WHEN a.salida IS NOT NULL THEN 'Completo'
-                                WHEN a.regreso_almuerzo IS NOT NULL THEN 'Regreso Almuerzo (Incompleto)'
-                                WHEN a.salida_almuerzo IS NOT NULL THEN 'Salida a Almuerzo (Incompleto)'
-                                WHEN a.entrada IS NOT NULL THEN 'Solo Entrada (Incompleto)'
+                                WHEN a.regreso_almuerzo IS NOT NULL THEN 'En Turno (Regreso Almuerzo)'
+                                WHEN a.salida_almuerzo IS NOT NULL THEN 'En Almuerzo'
+                                WHEN a.entrada IS NOT NULL THEN 'En Turno'
                                 ELSE 'Incompleto'
                             END AS estado
                         FROM emp_dates ed
                         LEFT JOIN aggregated a ON ed.emp_code = a.emp_code AND ed.fecha = a.fecha
                         LEFT JOIN personnel_department dept ON ed.department_id = dept.id
+                        LEFT JOIN LATERAL (
+                            SELECT l.abstractexception_ptr_id, c.category_name, c.report_symbol
+                            FROM att_leave l
+                            INNER JOIN att_leavecategory c ON l.category_id = c.id
+                            LEFT JOIN workflow_abstractexception wa ON l.abstractexception_ptr_id = wa.id
+                            WHERE l.employee_id = ed.idempleado
+                              AND COALESCE(wa.audit_status, 2) = 2
+                              AND ed.fecha >= l.start_time::date 
+                              AND ed.fecha <= l.end_time::date
+                            LIMIT 1
+                        ) lv ON true
                         LEFT JOIN LATERAL (
                             SELECT shift_id FROM att_attschedule WHERE employee_id = ed.idempleado ORDER BY id DESC LIMIT 1
                         ) s ON true

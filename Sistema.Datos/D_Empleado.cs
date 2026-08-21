@@ -74,13 +74,13 @@ namespace Sistema.Datos
                 using (NpgsqlConnection sqlCon = Conexion.CrearConexion())
                 {
                     string consulta = @"
-                        SELECT id AS idempleado, 
-                               (COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) AS nombre_completo
+                        SELECT id AS idempleado,
+                               id, 
+                               (COALESCE(emp_code::text, '') || ' - ' || COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) AS nombre_completo
                         FROM personnel_employee
                         WHERE COALESCE(deleted, false) = false 
                           AND COALESCE(is_active, true) = true 
-                          AND COALESCE(enable_att, true) = true
-                        ORDER BY first_name ASC";
+                        ORDER BY emp_code ASC";
 
                     using (NpgsqlCommand comando = new NpgsqlCommand(consulta, sqlCon))
                     {

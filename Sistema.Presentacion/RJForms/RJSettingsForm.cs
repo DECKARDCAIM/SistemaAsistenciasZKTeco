@@ -90,14 +90,7 @@ namespace RJCodeUI_M1.RJForms
             tbMultiChildForms.Checked = UIAppearance.MultiChildForms;
 
             //Vista previa
-            panelBorde.Padding = new Padding(UIAppearance.FormBorderSize);
-            panelBorde.BackColor = UIAppearance.FormBorderColor;          
-            panelBackground.BackColor = UIAppearance.BackgroundColor;            
-            if (UIAppearance.Style == UIStyle.Supernova)
-                panelTitleBar.BackColor = ColorEditor.Darken(UIAppearance.BackgroundColor, 9);
-            else panelTitleBar.BackColor = UIAppearance.PrimaryStyleColor;
-
-
+            ActualizarVistaPrevia();
         }
         private void SaveAppearanceSettings()
         {
@@ -139,77 +132,68 @@ namespace RJCodeUI_M1.RJForms
  
         #region -> Vista previa de cambios
 
+        private void ActualizarVistaPrevia()
+        {
+            try
+            {
+                bool isDark = rbDarkTheme.Checked;
+                Color bgColor = isDark ? Color.FromArgb(18, 22, 38) : Color.FromArgb(240, 245, 249);
+                Color textColor = isDark ? Color.White : Color.FromArgb(30, 41, 59);
+
+                Color styleColor = RJColors.Forest;
+                if (cbStyles.SelectedIndex >= 0)
+                {
+                    UIStyle style = (UIStyle)cbStyles.SelectedIndex;
+                    switch (style)
+                    {
+                        case UIStyle.Axolotl: styleColor = RJColors.Axolotl; break;
+                        case UIStyle.FireOpal: styleColor = RJColors.FireOpal; break;
+                        case UIStyle.Forest: styleColor = RJColors.Forest; break;
+                        case UIStyle.Lisianthus: styleColor = RJColors.Lisianthus; break;
+                        case UIStyle.Neptune: styleColor = RJColors.Neptune; break;
+                        case UIStyle.Petunia: styleColor = RJColors.Petunia; break;
+                        case UIStyle.Ruby: styleColor = RJColors.Ruby; break;
+                        case UIStyle.Sky: styleColor = RJColors.Sky; break;
+                        case UIStyle.Spinel: styleColor = RJColors.Spinel; break;
+                        case UIStyle.Supernova: styleColor = ColorEditor.Darken(bgColor, 9); break;
+                    }
+                }
+
+                int borderSize = Math.Max(1, tbmFormBorderSize.Value);
+                panelBorde.Padding = new Padding(borderSize);
+
+                if (tbColorFormBorder.Checked)
+                    panelBorde.BackColor = (cbStyles.SelectedIndex == (int)UIStyle.Supernova) ? RJColors.FantasyColorScheme1 : styleColor;
+                else
+                    panelBorde.BackColor = isDark ? Color.FromArgb(60, 70, 95) : Color.FromArgb(200, 205, 215);
+
+                panelBackground.BackColor = bgColor;
+                panelTitleBar.BackColor = styleColor;
+
+                lblVista.Text = $"Ventana de Ejemplo - Tema {(isDark ? "Oscuro" : "Claro")}\nEstilo: {cbStyles.Text}";
+                lblVista.ForeColor = textColor;
+            }
+            catch { }
+        }
+
         private void rbLightTheme_CheckedChanged(object sender, EventArgs e)
         {
-            if(rbLightTheme.Checked)
-                panelBackground.BackColor = RJColors.LightBackground;
-            else panelBackground.BackColor = RJColors.DarkBackground;
-
-            if(cbStyles.SelectedIndex==(int)UIStyle.Supernova)
-                panelTitleBar.BackColor = ColorEditor.Darken(panelBackground.BackColor, 9);
-
+            ActualizarVistaPrevia();
         }
 
         private void cbStyles_OnSelectedIndexChanged(object sender, EventArgs e)
         {
-            UIStyle style=(UIStyle)cbStyles.SelectedIndex;
-            switch (style)
-            { 
-                case UIStyle.Axolotl:
-                    panelTitleBar.BackColor = RJColors.Axolotl;
-                    break;
-                case UIStyle.FireOpal:
-                    panelTitleBar.BackColor = RJColors.FireOpal;
-                    break;
-                case UIStyle.Forest:
-                    panelTitleBar.BackColor = RJColors.Forest;
-                    break;
-                case UIStyle.Lisianthus:
-                    panelTitleBar.BackColor = RJColors.Lisianthus;
-                    break;
-                case UIStyle.Neptune:
-                    panelTitleBar.BackColor = RJColors.Neptune;
-                    break;
-                case UIStyle.Petunia:
-                    panelTitleBar.BackColor = RJColors.Petunia;
-                    break;
-                case UIStyle.Ruby:
-                    panelTitleBar.BackColor = RJColors.Ruby;
-                    break;
-                case UIStyle.Sky:
-                    panelTitleBar.BackColor = RJColors.Sky;
-                    break;
-                case UIStyle.Spinel:
-                    panelTitleBar.BackColor = RJColors.Spinel;
-                    break;
-                case UIStyle.Supernova:
-                    panelTitleBar.BackColor = ColorEditor.Darken(panelBackground.BackColor, 9);
-                    break;
-            }
-            if (tbColorFormBorder.Checked)
-            {
-                if (cbStyles.SelectedIndex == (int)UIStyle.Supernova)
-                    panelBorde.BackColor = RJColors.FantasyColorScheme1;
-                else panelBorde.BackColor = panelTitleBar.BackColor;
-            }
-            else panelBorde.BackColor = RJColors.DefaultFormBorderColor;
+            ActualizarVistaPrevia();
         }
 
         private void tbmFormBorderSize_Scroll(object sender, EventArgs e)
         {
-            panelBorde.Padding = new Padding(tbmFormBorderSize.Value);
+            ActualizarVistaPrevia();
         }
 
         private void tbColorFormBorder_CheckedChanged(object sender, EventArgs e)
         {
-            if (tbColorFormBorder.Checked)
-            {
-                if (cbStyles.SelectedIndex == (int)UIStyle.Supernova)
-                 panelBorde.BackColor = RJColors.FantasyColorScheme1;
-                else panelBorde.BackColor = panelTitleBar.BackColor;
-            }
-            else panelBorde.BackColor = RJColors.DefaultFormBorderColor;
-
+            ActualizarVistaPrevia();
         }
         #endregion
 

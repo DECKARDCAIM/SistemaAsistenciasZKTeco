@@ -24,7 +24,11 @@ namespace Sistema.Presentacion
             this.btnNavUsuarios = new RJCodeUI_M1.RJControls.RJMenuButton();
             this.btnNavAsistencias = new RJCodeUI_M1.RJControls.RJMenuButton();
             this.btnNavBiometricos = new RJCodeUI_M1.RJControls.RJMenuButton();
+            this.btnNavAsignacionHorarios = new RJCodeUI_M1.RJControls.RJMenuButton();
+            this.btnNavHorarios = new RJCodeUI_M1.RJControls.RJMenuButton();
+            this.btnNavDepartamentos = new RJCodeUI_M1.RJControls.RJMenuButton();
             this.btnNavEmpleados = new RJCodeUI_M1.RJControls.RJMenuButton();
+            this.btnNavVacaciones = new RJCodeUI_M1.RJControls.RJMenuButton();
             this.btnNavDashboard = new RJCodeUI_M1.RJControls.RJMenuButton();
             this.pnlSideMenuHeader = new System.Windows.Forms.Panel();
             this.lblLogoSubtitle = new System.Windows.Forms.Label();
@@ -57,6 +61,10 @@ namespace Sistema.Presentacion
             this.pnlSideMenu.Controls.Add(this.btnNavUsuarios);
             this.pnlSideMenu.Controls.Add(this.btnNavAsistencias);
             this.pnlSideMenu.Controls.Add(this.btnNavBiometricos);
+            this.pnlSideMenu.Controls.Add(this.btnNavVacaciones);
+            this.pnlSideMenu.Controls.Add(this.btnNavAsignacionHorarios);
+            this.pnlSideMenu.Controls.Add(this.btnNavHorarios);
+            this.pnlSideMenu.Controls.Add(this.btnNavDepartamentos);
             this.pnlSideMenu.Controls.Add(this.btnNavEmpleados);
             this.pnlSideMenu.Controls.Add(this.btnNavDashboard);
             this.pnlSideMenu.Controls.Add(this.pnlSideMenuHeader);
@@ -68,11 +76,11 @@ namespace Sistema.Presentacion
             // 
             // btnNavSalir
             // 
-            this.btnNavSalir.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
+            this.btnNavSalir.BackColor = System.Drawing.Color.Transparent;
             this.btnNavSalir.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnNavSalir.FlatAppearance.BorderSize = 0;
             this.btnNavSalir.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))));
-            this.btnNavSalir.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(52)))), ((int)(((byte)(80)))));
+            this.btnNavSalir.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(42)))), ((int)(((byte)(75)))));
             this.btnNavSalir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNavSalir.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnNavSalir.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(210)))), ((int)(((byte)(235)))));
@@ -196,6 +204,110 @@ namespace Sistema.Presentacion
             this.btnNavBiometricos.UseVisualStyleBackColor = false;
             this.btnNavBiometricos.Click += new System.EventHandler(this.btnNavBiometricos_Click);
             // 
+            // btnNavDepartamentos
+            // 
+            this.btnNavDepartamentos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
+            this.btnNavDepartamentos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnNavDepartamentos.FlatAppearance.BorderSize = 0;
+            this.btnNavDepartamentos.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(42)))), ((int)(((byte)(75)))));
+            this.btnNavDepartamentos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(42)))), ((int)(((byte)(75)))));
+            this.btnNavDepartamentos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNavDepartamentos.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnNavDepartamentos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(210)))), ((int)(((byte)(235)))));
+            this.btnNavDepartamentos.IconChar = FontAwesome.Sharp.IconChar.Building;
+            this.btnNavDepartamentos.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(205)))), ((int)(((byte)(196)))));
+            this.btnNavDepartamentos.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnNavDepartamentos.IconSize = 24;
+            this.btnNavDepartamentos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNavDepartamentos.Location = new System.Drawing.Point(0, 175);
+            this.btnNavDepartamentos.Name = "btnNavDepartamentos";
+            this.btnNavDepartamentos.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnNavDepartamentos.Size = new System.Drawing.Size(235, 50);
+            this.btnNavDepartamentos.TabIndex = 3;
+            this.btnNavDepartamentos.Text = "   Departamentos";
+            this.btnNavDepartamentos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNavDepartamentos.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnNavDepartamentos.UseVisualStyleBackColor = false;
+            this.btnNavDepartamentos.Click += new System.EventHandler(this.btnNavDepartamentos_Click);
+            // 
+            // btnNavHorarios
+            // 
+            this.btnNavHorarios.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
+            this.btnNavHorarios.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnNavHorarios.FlatAppearance.BorderSize = 0;
+            this.btnNavHorarios.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(42)))), ((int)(((byte)(75)))));
+            this.btnNavHorarios.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(42)))), ((int)(((byte)(75)))));
+            this.btnNavHorarios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNavHorarios.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnNavHorarios.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(210)))), ((int)(((byte)(235)))));
+            this.btnNavHorarios.IconChar = FontAwesome.Sharp.IconChar.Clock;
+            this.btnNavHorarios.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(193)))), ((int)(((byte)(7)))));
+            this.btnNavHorarios.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnNavHorarios.IconSize = 24;
+            this.btnNavHorarios.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNavHorarios.Location = new System.Drawing.Point(0, 225);
+            this.btnNavHorarios.Name = "btnNavHorarios";
+            this.btnNavHorarios.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnNavHorarios.Size = new System.Drawing.Size(235, 50);
+            this.btnNavHorarios.TabIndex = 4;
+            this.btnNavHorarios.Text = "   Crear Horarios";
+            this.btnNavHorarios.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNavHorarios.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnNavHorarios.UseVisualStyleBackColor = false;
+            this.btnNavHorarios.Click += new System.EventHandler(this.btnNavHorarios_Click);
+            // 
+            // btnNavAsignacionHorarios
+            // 
+            this.btnNavAsignacionHorarios.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
+            this.btnNavAsignacionHorarios.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnNavAsignacionHorarios.FlatAppearance.BorderSize = 0;
+            this.btnNavAsignacionHorarios.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(42)))), ((int)(((byte)(75)))));
+            this.btnNavAsignacionHorarios.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(42)))), ((int)(((byte)(75)))));
+            this.btnNavAsignacionHorarios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNavAsignacionHorarios.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnNavAsignacionHorarios.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(210)))), ((int)(((byte)(235)))));
+            this.btnNavAsignacionHorarios.IconChar = FontAwesome.Sharp.IconChar.CalendarAlt;
+            this.btnNavAsignacionHorarios.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(112)))), ((int)(((byte)(67)))));
+            this.btnNavAsignacionHorarios.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnNavAsignacionHorarios.IconSize = 24;
+            this.btnNavAsignacionHorarios.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNavAsignacionHorarios.Location = new System.Drawing.Point(0, 275);
+            this.btnNavAsignacionHorarios.Name = "btnNavAsignacionHorarios";
+            this.btnNavAsignacionHorarios.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnNavAsignacionHorarios.Size = new System.Drawing.Size(235, 50);
+            this.btnNavAsignacionHorarios.TabIndex = 5;
+            this.btnNavAsignacionHorarios.Text = "   Asignación de Turnos";
+            this.btnNavAsignacionHorarios.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNavAsignacionHorarios.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnNavAsignacionHorarios.UseVisualStyleBackColor = false;
+            this.btnNavAsignacionHorarios.Click += new System.EventHandler(this.btnNavAsignacionHorarios_Click);
+            // 
+            // btnNavVacaciones
+            // 
+            this.btnNavVacaciones.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
+            this.btnNavVacaciones.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnNavVacaciones.FlatAppearance.BorderSize = 0;
+            this.btnNavVacaciones.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(42)))), ((int)(((byte)(75)))));
+            this.btnNavVacaciones.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(42)))), ((int)(((byte)(75)))));
+            this.btnNavVacaciones.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNavVacaciones.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnNavVacaciones.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(210)))), ((int)(((byte)(235)))));
+            this.btnNavVacaciones.IconChar = FontAwesome.Sharp.IconChar.UmbrellaBeach;
+            this.btnNavVacaciones.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(98)))), ((int)(((byte)(146)))));
+            this.btnNavVacaciones.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnNavVacaciones.IconSize = 24;
+            this.btnNavVacaciones.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNavVacaciones.Location = new System.Drawing.Point(0, 325);
+            this.btnNavVacaciones.Name = "btnNavVacaciones";
+            this.btnNavVacaciones.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnNavVacaciones.Size = new System.Drawing.Size(235, 50);
+            this.btnNavVacaciones.TabIndex = 6;
+            this.btnNavVacaciones.Text = "   Vacaciones / Permisos";
+            this.btnNavVacaciones.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNavVacaciones.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnNavVacaciones.UseVisualStyleBackColor = false;
+            this.btnNavVacaciones.Click += new System.EventHandler(this.btnNavVacaciones_Click);
+            // 
             // btnNavEmpleados
             // 
             this.btnNavEmpleados.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
@@ -259,7 +371,7 @@ namespace Sistema.Presentacion
             this.pnlSideMenuHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlSideMenuHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlSideMenuHeader.Name = "pnlSideMenuHeader";
-            this.pnlSideMenuHeader.Size = new System.Drawing.Size(235, 75);
+            this.pnlSideMenuHeader.Size = new System.Drawing.Size(235, 60);
             this.pnlSideMenuHeader.TabIndex = 0;
             // 
             // pbLogoInstitucional
@@ -268,8 +380,8 @@ namespace Sistema.Presentacion
             this.pbLogoInstitucional.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbLogoInstitucional.Location = new System.Drawing.Point(0, 0);
             this.pbLogoInstitucional.Name = "pbLogoInstitucional";
-            this.pbLogoInstitucional.Padding = new System.Windows.Forms.Padding(18, 14, 18, 14);
-            this.pbLogoInstitucional.Size = new System.Drawing.Size(235, 75);
+            this.pbLogoInstitucional.Padding = new System.Windows.Forms.Padding(12, 6, 12, 6);
+            this.pbLogoInstitucional.Size = new System.Drawing.Size(235, 60);
             this.pbLogoInstitucional.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbLogoInstitucional.TabIndex = 3;
             this.pbLogoInstitucional.TabStop = false;
@@ -279,7 +391,7 @@ namespace Sistema.Presentacion
             this.lblLogoSubtitle.AutoSize = true;
             this.lblLogoSubtitle.Font = new System.Drawing.Font("Segoe UI", 7.5F, System.Drawing.FontStyle.Bold);
             this.lblLogoSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(180)))), ((int)(((byte)(216)))));
-            this.lblLogoSubtitle.Location = new System.Drawing.Point(70, 42);
+            this.lblLogoSubtitle.Location = new System.Drawing.Point(58, 33);
             this.lblLogoSubtitle.Name = "lblLogoSubtitle";
             this.lblLogoSubtitle.Size = new System.Drawing.Size(83, 12);
             this.lblLogoSubtitle.TabIndex = 2;
@@ -288,11 +400,11 @@ namespace Sistema.Presentacion
             // lblLogoTitle
             // 
             this.lblLogoTitle.AutoSize = true;
-            this.lblLogoTitle.Font = new System.Drawing.Font("Segoe UI", 11.5F, System.Drawing.FontStyle.Bold);
+            this.lblLogoTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.lblLogoTitle.ForeColor = System.Drawing.Color.White;
-            this.lblLogoTitle.Location = new System.Drawing.Point(70, 20);
+            this.lblLogoTitle.Location = new System.Drawing.Point(58, 12);
             this.lblLogoTitle.Name = "lblLogoTitle";
-            this.lblLogoTitle.Size = new System.Drawing.Size(111, 21);
+            this.lblLogoTitle.Size = new System.Drawing.Size(105, 20);
             this.lblLogoTitle.TabIndex = 1;
             this.lblLogoTitle.Text = "ASISTENCIAS";
             // 
@@ -303,10 +415,10 @@ namespace Sistema.Presentacion
             this.picSideLogo.IconChar = FontAwesome.Sharp.IconChar.Fingerprint;
             this.picSideLogo.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(180)))), ((int)(((byte)(216)))));
             this.picSideLogo.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.picSideLogo.IconSize = 42;
-            this.picSideLogo.Location = new System.Drawing.Point(15, 18);
+            this.picSideLogo.IconSize = 36;
+            this.picSideLogo.Location = new System.Drawing.Point(12, 12);
             this.picSideLogo.Name = "picSideLogo";
-            this.picSideLogo.Size = new System.Drawing.Size(45, 42);
+            this.picSideLogo.Size = new System.Drawing.Size(38, 36);
             this.picSideLogo.TabIndex = 0;
             this.picSideLogo.TabStop = false;
             // 
@@ -467,6 +579,10 @@ namespace Sistema.Presentacion
         private System.Windows.Forms.Label lblLogoSubtitle;
         private RJCodeUI_M1.RJControls.RJMenuButton btnNavDashboard;
         private RJCodeUI_M1.RJControls.RJMenuButton btnNavEmpleados;
+        private RJCodeUI_M1.RJControls.RJMenuButton btnNavDepartamentos;
+        private RJCodeUI_M1.RJControls.RJMenuButton btnNavHorarios;
+        private RJCodeUI_M1.RJControls.RJMenuButton btnNavAsignacionHorarios;
+        private RJCodeUI_M1.RJControls.RJMenuButton btnNavVacaciones;
         private RJCodeUI_M1.RJControls.RJMenuButton btnNavBiometricos;
         private RJCodeUI_M1.RJControls.RJMenuButton btnNavAsistencias;
         private RJCodeUI_M1.RJControls.RJMenuButton btnNavUsuarios;

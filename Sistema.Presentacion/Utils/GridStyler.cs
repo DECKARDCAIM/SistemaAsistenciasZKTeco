@@ -27,7 +27,7 @@ namespace Sistema.Presentacion.Utils
                 ? UIAppearance.PrimaryStyleColor 
                 : Color.FromArgb(40, 53, 147);
 
-            // Estilo de Encabezados
+            // Estilo de Encabezados Unificado (Garantiza que todos los encabezados tengan exactamente el mismo color del tema)
             dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgv.ColumnHeadersHeight = 40;
@@ -36,10 +36,26 @@ namespace Sistema.Presentacion.Utils
                 Alignment = DataGridViewContentAlignment.MiddleLeft,
                 BackColor = colorHeader,
                 ForeColor = Color.White,
+                SelectionBackColor = colorHeader,
+                SelectionForeColor = Color.White,
                 Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
                 Padding = new Padding(8, 0, 0, 0),
                 WrapMode = DataGridViewTriState.False
             };
+
+            foreach (DataGridViewColumn col in dgv.Columns)
+            {
+                col.HeaderCell.Style.BackColor = colorHeader;
+                col.HeaderCell.Style.ForeColor = Color.White;
+                col.HeaderCell.Style.SelectionBackColor = colorHeader;
+                col.HeaderCell.Style.SelectionForeColor = Color.White;
+            }
+
+            // Asegurar que al enlazar datos o agregar columnas se preserve el color uniforme
+            dgv.DataBindingComplete -= Dgv_DataBindingComplete;
+            dgv.DataBindingComplete += Dgv_DataBindingComplete;
+            dgv.ColumnAdded -= Dgv_ColumnAdded;
+            dgv.ColumnAdded += Dgv_ColumnAdded;
 
             // Estilo de Filas
             dgv.RowTemplate.Height = 36;
@@ -90,6 +106,38 @@ namespace Sistema.Presentacion.Utils
                     Padding = new Padding(6, 0, 0, 0)
                 };
             }
+        }
+
+        private static void Dgv_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            if (sender is DataGridView dgv)
+            {
+                Color colorHeader = UIAppearance.PrimaryStyleColor != Color.Empty 
+                    ? UIAppearance.PrimaryStyleColor 
+                    : Color.FromArgb(40, 53, 147);
+
+                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                foreach (DataGridViewColumn col in dgv.Columns)
+                {
+                    col.HeaderCell.Style.BackColor = colorHeader;
+                    col.HeaderCell.Style.ForeColor = Color.White;
+                    col.HeaderCell.Style.SelectionBackColor = colorHeader;
+                    col.HeaderCell.Style.SelectionForeColor = Color.White;
+                }
+            }
+        }
+
+        private static void Dgv_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
+        {
+            Color colorHeader = UIAppearance.PrimaryStyleColor != Color.Empty 
+                ? UIAppearance.PrimaryStyleColor 
+                : Color.FromArgb(40, 53, 147);
+
+            e.Column.HeaderCell.Style.BackColor = colorHeader;
+            e.Column.HeaderCell.Style.ForeColor = Color.White;
+            e.Column.HeaderCell.Style.SelectionBackColor = colorHeader;
+            e.Column.HeaderCell.Style.SelectionForeColor = Color.White;
         }
     }
 }

@@ -47,32 +47,37 @@ namespace Sistema.Presentacion
             // 
             // tabPrincipal
             // 
+            // 
+            // tabPrincipal
+            // 
+            this.tabPrincipal.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabPrincipal.Controls.Add(this.tabPageListado);
-            this.tabPrincipal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabPrincipal.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.tabPrincipal.Location = new System.Drawing.Point(0, 0);
+            this.tabPrincipal.Location = new System.Drawing.Point(-6, -6);
+            this.tabPrincipal.Margin = new System.Windows.Forms.Padding(0);
             this.tabPrincipal.Name = "tabPrincipal";
             this.tabPrincipal.SelectedIndex = 0;
-            this.tabPrincipal.Size = new System.Drawing.Size(950, 630);
+            this.tabPrincipal.Size = new System.Drawing.Size(1012, 692);
             this.tabPrincipal.TabIndex = 0;
             // 
             // tabPageListado
             // 
-            this.tabPageListado.BackColor = System.Drawing.Color.White;
-            this.tabPageListado.Controls.Add(this.lblTotal);
+            this.tabPageListado.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(22)))), ((int)(((byte)(38)))));
             this.tabPageListado.Controls.Add(this.dgvAsistencias);
+            this.tabPageListado.Controls.Add(this.lblTotal);
             this.tabPageListado.Controls.Add(this.pnlFiltros);
             this.tabPageListado.Location = new System.Drawing.Point(4, 25);
+            this.tabPageListado.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageListado.Name = "tabPageListado";
-            this.tabPageListado.Padding = new System.Windows.Forms.Padding(15);
-            this.tabPageListado.Size = new System.Drawing.Size(942, 601);
+            this.tabPageListado.Padding = new System.Windows.Forms.Padding(12);
+            this.tabPageListado.Size = new System.Drawing.Size(1000, 659);
             this.tabPageListado.TabIndex = 0;
             this.tabPageListado.Text = "Marcaciones y Asistencias";
             // 
             // pnlFiltros
             // 
-            this.pnlFiltros.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlFiltros.BackColor = System.Drawing.Color.Transparent;
             this.pnlFiltros.Controls.Add(this.lblDesde);
             this.pnlFiltros.Controls.Add(this.dtpDesde);
@@ -91,9 +96,10 @@ namespace Sistema.Presentacion
             this.pnlFiltros.Controls.Add(this.btnFiltrar);
             this.pnlFiltros.Controls.Add(this.btnExportar);
             this.pnlFiltros.Controls.Add(this.btnDescargarBio);
-            this.pnlFiltros.Location = new System.Drawing.Point(15, 8);
+            this.pnlFiltros.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlFiltros.Location = new System.Drawing.Point(12, 12);
             this.pnlFiltros.Name = "pnlFiltros";
-            this.pnlFiltros.Size = new System.Drawing.Size(910, 85);
+            this.pnlFiltros.Size = new System.Drawing.Size(976, 82);
             this.pnlFiltros.TabIndex = 0;
             // 
             // lblDesde
@@ -298,29 +304,26 @@ namespace Sistema.Presentacion
             // 
             this.dgvAsistencias.AllowUserToAddRows = false;
             this.dgvAsistencias.AllowUserToDeleteRows = false;
-            this.dgvAsistencias.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvAsistencias.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvAsistencias.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.dgvAsistencias.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvAsistencias.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAsistencias.Location = new System.Drawing.Point(15, 98);
+            this.dgvAsistencias.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvAsistencias.Location = new System.Drawing.Point(12, 94);
             this.dgvAsistencias.Name = "dgvAsistencias";
             this.dgvAsistencias.ReadOnly = true;
             this.dgvAsistencias.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAsistencias.Size = new System.Drawing.Size(910, 460);
+            this.dgvAsistencias.Size = new System.Drawing.Size(976, 518);
             this.dgvAsistencias.TabIndex = 1;
             // 
             // lblTotal
             // 
-            this.lblTotal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTotal.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lblTotal.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.lblTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.lblTotal.Location = new System.Drawing.Point(15, 565);
+            this.lblTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(175)))), ((int)(((byte)(200)))));
+            this.lblTotal.Location = new System.Drawing.Point(12, 612);
             this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(910, 25);
+            this.lblTotal.Size = new System.Drawing.Size(976, 35);
             this.lblTotal.TabIndex = 2;
             this.lblTotal.Text = "Total de registros: 0";
             this.lblTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;

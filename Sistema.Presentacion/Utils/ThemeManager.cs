@@ -68,7 +68,19 @@ namespace Sistema.Presentacion.Utils
                     tab.Margin = new Padding(0);
                     tab.Padding = new Point(0, 0);
 
-                    if (tab.ItemSize.Height > 1 && tab.Appearance != TabAppearance.FlatButtons)
+                    if (tab.ItemSize.Height <= 1 || tab.Appearance == TabAppearance.FlatButtons)
+                    {
+                        tab.Dock = DockStyle.None;
+                        tab.Location = new Point(-6, -6);
+                        tab.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+                        if (tab.Parent != null)
+                        {
+                            tab.Size = new Size(tab.Parent.ClientSize.Width + 12, tab.Parent.ClientSize.Height + 12);
+                            tab.Parent.SizeChanged -= TabParent_SizeChanged;
+                            tab.Parent.SizeChanged += TabParent_SizeChanged;
+                        }
+                    }
+                    else
                     {
                         tab.DrawMode = TabDrawMode.OwnerDrawFixed;
                         tab.ItemSize = new Size(140, 34);
@@ -83,7 +95,7 @@ namespace Sistema.Presentacion.Utils
                         page.BackColor = colorTabFondo;
                         page.ForeColor = colorTexto;
                         page.Margin = new Padding(0);
-                        page.Padding = new Padding(10);
+                        page.Padding = new Padding(12);
                         page.BorderStyle = BorderStyle.None;
                         AplicarTemaRecursivo(page, esOscuro, colorPrimario, colorTexto, colorSubtexto, colorInputFondo, colorInputBorder, colorPanelFondo, colorTabFondo);
                     }
@@ -114,11 +126,23 @@ namespace Sistema.Presentacion.Utils
                     cbo.ForeColor = colorTexto;
                     cbo.FlatStyle = FlatStyle.Flat;
                 }
+                else if (c is RJDatePicker rjDtp)
+                {
+                    rjDtp.Customizable = false;
+                    rjDtp.BackColor = colorInputFondo;
+                    rjDtp.ForeColor = colorTexto;
+                    rjDtp.BorderColor = colorPrimario;
+                    rjDtp.IconColor = colorPrimario;
+                    rjDtp.Font = new Font("Segoe UI", 9.5F);
+                }
                 else if (c is DateTimePicker dtp)
                 {
                     dtp.CalendarMonthBackground = colorInputFondo;
                     dtp.CalendarForeColor = colorTexto;
                     dtp.CalendarTitleBackColor = colorPrimario;
+                    dtp.CalendarTitleForeColor = Color.White;
+                    dtp.CalendarTrailingForeColor = colorSubtexto;
+                    dtp.Font = new Font("Segoe UI", 9.5F);
                 }
                 else if (c is RadioButton rdo)
                 {
@@ -228,6 +252,21 @@ namespace Sistema.Presentacion.Utils
             using (StringFormat sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
             {
                 e.Graphics.DrawString(page.Text, font, brushText, tabRect, sf);
+            }
+        }
+
+        private static void TabParent_SizeChanged(object sender, EventArgs e)
+        {
+            if (sender is Control parent)
+            {
+                foreach (Control c in parent.Controls)
+                {
+                    if (c is TabControl tab && (tab.ItemSize.Height <= 1 || tab.Appearance == TabAppearance.FlatButtons))
+                    {
+                        tab.Location = new Point(-6, -6);
+                        tab.Size = new Size(parent.ClientSize.Width + 12, parent.ClientSize.Height + 12);
+                    }
+                }
             }
         }
     }

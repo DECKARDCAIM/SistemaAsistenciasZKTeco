@@ -106,6 +106,10 @@ namespace Sistema.Presentacion
             {
                 _cachedForms["Dashboard"] = new FrmDashboard();
                 _cachedForms["Empleados"] = new FrmEmpleados();
+                _cachedForms["Departamentos"] = new FrmDepartamentos();
+                _cachedForms["Horarios"] = new FrmHorarios();
+                _cachedForms["AsignacionHorarios"] = new FrmAsignacionHorarios();
+                _cachedForms["VacacionesPermisos"] = new FrmVacacionesPermisos();
                 _cachedForms["Biometricos"] = new FrmBiometricos();
                 _cachedForms["Asistencias"] = new FrmAsistencias();
                 _cachedForms["Usuarios"] = new FrmUsuarios();
@@ -225,6 +229,10 @@ namespace Sistema.Presentacion
             {
                 ActivarBoton(_botonActivo);
             }
+            else
+            {
+                ResetearBotones();
+            }
 
             foreach (var kvp in _cachedForms)
             {
@@ -337,6 +345,26 @@ namespace Sistema.Presentacion
             btnNavEmpleados.IconColor = Color.FromArgb(66, 165, 245);
             btnNavEmpleados.Font = fuenteNormal;
 
+            btnNavDepartamentos.BackColor = colorInactivo;
+            btnNavDepartamentos.ForeColor = textoInactivo;
+            btnNavDepartamentos.IconColor = Color.FromArgb(78, 205, 196);
+            btnNavDepartamentos.Font = fuenteNormal;
+
+            btnNavHorarios.BackColor = colorInactivo;
+            btnNavHorarios.ForeColor = textoInactivo;
+            btnNavHorarios.IconColor = Color.FromArgb(255, 193, 7);
+            btnNavHorarios.Font = fuenteNormal;
+
+            btnNavAsignacionHorarios.BackColor = colorInactivo;
+            btnNavAsignacionHorarios.ForeColor = textoInactivo;
+            btnNavAsignacionHorarios.IconColor = Color.FromArgb(255, 112, 67);
+            btnNavAsignacionHorarios.Font = fuenteNormal;
+
+            btnNavVacaciones.BackColor = colorInactivo;
+            btnNavVacaciones.ForeColor = textoInactivo;
+            btnNavVacaciones.IconColor = Color.FromArgb(240, 98, 146);
+            btnNavVacaciones.Font = fuenteNormal;
+
             btnNavBiometricos.BackColor = colorInactivo;
             btnNavBiometricos.ForeColor = textoInactivo;
             btnNavBiometricos.IconColor = Color.FromArgb(0, 180, 216);
@@ -356,6 +384,13 @@ namespace Sistema.Presentacion
             btnNavTema.ForeColor = textoInactivo;
             btnNavTema.IconColor = Color.FromArgb(171, 71, 188);
             btnNavTema.Font = fuenteNormal;
+
+            btnNavSalir.BackColor = colorInactivo;
+            btnNavSalir.ForeColor = textoInactivo;
+            btnNavSalir.IconColor = Color.FromArgb(239, 83, 80);
+            btnNavSalir.Font = fuenteNormal;
+            btnNavSalir.FlatAppearance.MouseOverBackColor = (UIAppearance.Theme == UITheme.Dark ? Color.FromArgb(30, 36, 62) : Color.FromArgb(35, 42, 75));
+            btnNavSalir.FlatAppearance.MouseDownBackColor = Color.FromArgb(180, 40, 50);
         }
 
         private void btnInfoSistema_Click(object sender, EventArgs e)
@@ -376,6 +411,30 @@ namespace Sistema.Presentacion
         {
             ActivarBoton(btnNavEmpleados);
             AbrirFormularioEnContenedor("Empleados", () => new FrmEmpleados(), "Gestión de Empleados");
+        }
+
+        private void btnNavDepartamentos_Click(object sender, EventArgs e)
+        {
+            ActivarBoton(btnNavDepartamentos);
+            AbrirFormularioEnContenedor("Departamentos", () => new FrmDepartamentos(), "Gestión de Departamentos");
+        }
+
+        private void btnNavHorarios_Click(object sender, EventArgs e)
+        {
+            ActivarBoton(btnNavHorarios);
+            AbrirFormularioEnContenedor("Horarios", () => new FrmHorarios(), "Creación y Configuración de Horarios");
+        }
+
+        private void btnNavAsignacionHorarios_Click(object sender, EventArgs e)
+        {
+            ActivarBoton(btnNavAsignacionHorarios);
+            AbrirFormularioEnContenedor("AsignacionHorarios", () => new FrmAsignacionHorarios(), "Asignación de Turnos");
+        }
+
+        private void btnNavVacaciones_Click(object sender, EventArgs e)
+        {
+            ActivarBoton(btnNavVacaciones);
+            AbrirFormularioEnContenedor("VacacionesPermisos", () => new FrmVacacionesPermisos(), "Gestión de Vacaciones y Permisos");
         }
 
         private void btnNavBiometricos_Click(object sender, EventArgs e)

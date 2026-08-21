@@ -101,6 +101,7 @@
     <Compile Include="D_Horario.cs" />
     <Compile Include="D_Rol.cs" />
     <Compile Include="D_Usuario.cs" />
+    <Compile Include="D_VacacionPermiso.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RedisCacheService.cs" />
   </ItemGroup>

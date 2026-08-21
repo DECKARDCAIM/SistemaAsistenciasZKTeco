@@ -19,6 +19,8 @@ namespace Sistema.Presentacion
         {
             this.tabPrincipal = new System.Windows.Forms.TabControl();
             this.tabPageListado = new System.Windows.Forms.TabPage();
+            this.pnlTop = new System.Windows.Forms.Panel();
+            this.pnlBottom = new System.Windows.Forms.Panel();
             this.btnExportar = new System.Windows.Forms.Button();
             this.btnSubirBiometrico = new System.Windows.Forms.Button();
             this.btnDescargarBiometrico = new System.Windows.Forms.Button();
@@ -66,37 +68,100 @@ namespace Sistema.Presentacion
             // 
             // tabPrincipal
             // 
+            this.tabPrincipal.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabPrincipal.Controls.Add(this.tabPageListado);
             this.tabPrincipal.Controls.Add(this.tabPageMantenimiento);
-            this.tabPrincipal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabPrincipal.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.tabPrincipal.Location = new System.Drawing.Point(0, 0);
+            this.tabPrincipal.Location = new System.Drawing.Point(-6, -6);
+            this.tabPrincipal.Margin = new System.Windows.Forms.Padding(0);
             this.tabPrincipal.Name = "tabPrincipal";
             this.tabPrincipal.SelectedIndex = 0;
-            this.tabPrincipal.Size = new System.Drawing.Size(950, 630);
+            this.tabPrincipal.Size = new System.Drawing.Size(1012, 692);
             this.tabPrincipal.TabIndex = 0;
             // 
             // tabPageListado
             // 
-            this.tabPageListado.BackColor = System.Drawing.Color.White;
-            this.tabPageListado.Controls.Add(this.btnExportar);
-            this.tabPageListado.Controls.Add(this.btnSubirBiometrico);
-            this.tabPageListado.Controls.Add(this.btnDescargarBiometrico);
-            this.tabPageListado.Controls.Add(this.btnDesactivar);
-            this.tabPageListado.Controls.Add(this.btnActivar);
-            this.tabPageListado.Controls.Add(this.btnEliminar);
-            this.tabPageListado.Controls.Add(this.lblTotal);
+            this.tabPageListado.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(22)))), ((int)(((byte)(38)))));
             this.tabPageListado.Controls.Add(this.dgvListado);
-            this.tabPageListado.Controls.Add(this.btnNuevo);
-            this.tabPageListado.Controls.Add(this.btnBuscar);
-            this.tabPageListado.Controls.Add(this.txtBuscar);
-            this.tabPageListado.Controls.Add(this.lblBuscar);
+            this.tabPageListado.Controls.Add(this.pnlBottom);
+            this.tabPageListado.Controls.Add(this.pnlTop);
             this.tabPageListado.Location = new System.Drawing.Point(4, 25);
+            this.tabPageListado.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageListado.Name = "tabPageListado";
-            this.tabPageListado.Padding = new System.Windows.Forms.Padding(15);
-            this.tabPageListado.Size = new System.Drawing.Size(942, 601);
+            this.tabPageListado.Padding = new System.Windows.Forms.Padding(12);
+            this.tabPageListado.Size = new System.Drawing.Size(1000, 659);
             this.tabPageListado.TabIndex = 0;
             this.tabPageListado.Text = "Listado de Empleados";
+            // 
+            // pnlTop
+            // 
+            this.pnlTop.Controls.Add(this.lblBuscar);
+            this.pnlTop.Controls.Add(this.txtBuscar);
+            this.pnlTop.Controls.Add(this.btnBuscar);
+            this.pnlTop.Controls.Add(this.btnNuevo);
+            this.pnlTop.Controls.Add(this.btnExportar);
+            this.pnlTop.Controls.Add(this.btnDescargarBiometrico);
+            this.pnlTop.Controls.Add(this.btnSubirBiometrico);
+            this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlTop.Location = new System.Drawing.Point(12, 12);
+            this.pnlTop.Name = "pnlTop";
+            this.pnlTop.Size = new System.Drawing.Size(976, 50);
+            this.pnlTop.TabIndex = 0;
+            // 
+            // lblBuscar
+            // 
+            this.lblBuscar.AutoSize = true;
+            this.lblBuscar.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblBuscar.ForeColor = System.Drawing.Color.White;
+            this.lblBuscar.Location = new System.Drawing.Point(0, 16);
+            this.lblBuscar.Name = "lblBuscar";
+            this.lblBuscar.Size = new System.Drawing.Size(53, 17);
+            this.lblBuscar.TabIndex = 0;
+            this.lblBuscar.Text = "Buscar:";
+            // 
+            // txtBuscar
+            // 
+            this.txtBuscar.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.txtBuscar.Location = new System.Drawing.Point(58, 13);
+            this.txtBuscar.Name = "txtBuscar";
+            this.txtBuscar.Size = new System.Drawing.Size(220, 24);
+            this.txtBuscar.TabIndex = 1;
+            this.txtBuscar.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBuscar_KeyDown);
+            // 
+            // btnBuscar
+            // 
+            this.btnBuscar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.btnBuscar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnBuscar.FlatAppearance.BorderSize = 0;
+            this.btnBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBuscar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnBuscar.ForeColor = System.Drawing.Color.White;
+            this.btnBuscar.Location = new System.Drawing.Point(286, 10);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(88, 30);
+            this.btnBuscar.TabIndex = 2;
+            this.btnBuscar.Text = "🔍 Buscar";
+            this.btnBuscar.UseVisualStyleBackColor = false;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
+            // 
+            // btnNuevo
+            // 
+            this.btnNuevo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnNuevo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnNuevo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnNuevo.FlatAppearance.BorderSize = 0;
+            this.btnNuevo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNuevo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnNuevo.ForeColor = System.Drawing.Color.White;
+            this.btnNuevo.Location = new System.Drawing.Point(440, 10);
+            this.btnNuevo.Name = "btnNuevo";
+            this.btnNuevo.Size = new System.Drawing.Size(95, 30);
+            this.btnNuevo.TabIndex = 3;
+            this.btnNuevo.Text = "➕ Nuevo";
+            this.btnNuevo.UseVisualStyleBackColor = false;
+            this.btnNuevo.Click += new System.EventHandler(this.btnNuevo_Click);
             // 
             // btnExportar
             // 
@@ -107,30 +172,13 @@ namespace Sistema.Presentacion
             this.btnExportar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExportar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnExportar.ForeColor = System.Drawing.Color.White;
-            this.btnExportar.Location = new System.Drawing.Point(415, 14);
+            this.btnExportar.Location = new System.Drawing.Point(545, 10);
             this.btnExportar.Name = "btnExportar";
-            this.btnExportar.Size = new System.Drawing.Size(150, 32);
-            this.btnExportar.TabIndex = 11;
-            this.btnExportar.Text = "📊 Exportar Excel";
+            this.btnExportar.Size = new System.Drawing.Size(135, 30);
+            this.btnExportar.TabIndex = 4;
+            this.btnExportar.Text = "📊 Exportar";
             this.btnExportar.UseVisualStyleBackColor = false;
             this.btnExportar.Click += new System.EventHandler(this.btnExportar_Click);
-            // 
-            // btnSubirBiometrico
-            // 
-            this.btnSubirBiometrico.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSubirBiometrico.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(158)))), ((int)(((byte)(11)))));
-            this.btnSubirBiometrico.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSubirBiometrico.FlatAppearance.BorderSize = 0;
-            this.btnSubirBiometrico.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSubirBiometrico.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnSubirBiometrico.ForeColor = System.Drawing.Color.White;
-            this.btnSubirBiometrico.Location = new System.Drawing.Point(760, 14);
-            this.btnSubirBiometrico.Name = "btnSubirBiometrico";
-            this.btnSubirBiometrico.Size = new System.Drawing.Size(165, 32);
-            this.btnSubirBiometrico.TabIndex = 10;
-            this.btnSubirBiometrico.Text = "📤 Subir a Biométricos";
-            this.btnSubirBiometrico.UseVisualStyleBackColor = false;
-            this.btnSubirBiometrico.Click += new System.EventHandler(this.btnSubirBiometrico_Click);
             // 
             // btnDescargarBiometrico
             // 
@@ -141,150 +189,123 @@ namespace Sistema.Presentacion
             this.btnDescargarBiometrico.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDescargarBiometrico.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnDescargarBiometrico.ForeColor = System.Drawing.Color.White;
-            this.btnDescargarBiometrico.Location = new System.Drawing.Point(575, 14);
+            this.btnDescargarBiometrico.Location = new System.Drawing.Point(690, 10);
             this.btnDescargarBiometrico.Name = "btnDescargarBiometrico";
-            this.btnDescargarBiometrico.Size = new System.Drawing.Size(175, 32);
-            this.btnDescargarBiometrico.TabIndex = 9;
-            this.btnDescargarBiometrico.Text = "📥 Bajar de Biométricos";
+            this.btnDescargarBiometrico.Size = new System.Drawing.Size(140, 30);
+            this.btnDescargarBiometrico.TabIndex = 5;
+            this.btnDescargarBiometrico.Text = "📥 Bajar de Reloj";
             this.btnDescargarBiometrico.UseVisualStyleBackColor = false;
             this.btnDescargarBiometrico.Click += new System.EventHandler(this.btnDescargarBiometrico_Click);
             // 
-            // btnDesactivar
+            // btnSubirBiometrico
             // 
-            this.btnDesactivar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnDesactivar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(115)))), ((int)(((byte)(22)))));
-            this.btnDesactivar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDesactivar.FlatAppearance.BorderSize = 0;
-            this.btnDesactivar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDesactivar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnDesactivar.ForeColor = System.Drawing.Color.White;
-            this.btnDesactivar.Location = new System.Drawing.Point(235, 555);
-            this.btnDesactivar.Name = "btnDesactivar";
-            this.btnDesactivar.Size = new System.Drawing.Size(110, 32);
-            this.btnDesactivar.TabIndex = 8;
-            this.btnDesactivar.Text = "⛔ Desactivar";
-            this.btnDesactivar.UseVisualStyleBackColor = false;
-            this.btnDesactivar.Click += new System.EventHandler(this.btnDesactivar_Click);
+            this.btnSubirBiometrico.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSubirBiometrico.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(158)))), ((int)(((byte)(11)))));
+            this.btnSubirBiometrico.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSubirBiometrico.FlatAppearance.BorderSize = 0;
+            this.btnSubirBiometrico.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSubirBiometrico.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnSubirBiometrico.ForeColor = System.Drawing.Color.White;
+            this.btnSubirBiometrico.Location = new System.Drawing.Point(838, 10);
+            this.btnSubirBiometrico.Name = "btnSubirBiometrico";
+            this.btnSubirBiometrico.Size = new System.Drawing.Size(135, 30);
+            this.btnSubirBiometrico.TabIndex = 6;
+            this.btnSubirBiometrico.Text = "📤 Subir a Reloj";
+            this.btnSubirBiometrico.UseVisualStyleBackColor = false;
+            this.btnSubirBiometrico.Click += new System.EventHandler(this.btnSubirBiometrico_Click);
             // 
-            // btnActivar
+            // dgvListado
             // 
-            this.btnActivar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnActivar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(13)))), ((int)(((byte)(148)))), ((int)(((byte)(136)))));
-            this.btnActivar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnActivar.FlatAppearance.BorderSize = 0;
-            this.btnActivar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnActivar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnActivar.ForeColor = System.Drawing.Color.White;
-            this.btnActivar.Location = new System.Drawing.Point(125, 555);
-            this.btnActivar.Name = "btnActivar";
-            this.btnActivar.Size = new System.Drawing.Size(100, 32);
-            this.btnActivar.TabIndex = 7;
-            this.btnActivar.Text = "✔️ Activar";
-            this.btnActivar.UseVisualStyleBackColor = false;
-            this.btnActivar.Click += new System.EventHandler(this.btnActivar_Click);
+            this.dgvListado.AllowUserToAddRows = false;
+            this.dgvListado.AllowUserToDeleteRows = false;
+            this.dgvListado.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvListado.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.dgvListado.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvListado.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvListado.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvListado.Location = new System.Drawing.Point(12, 62);
+            this.dgvListado.Name = "dgvListado";
+            this.dgvListado.ReadOnly = true;
+            this.dgvListado.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvListado.Size = new System.Drawing.Size(976, 545);
+            this.dgvListado.TabIndex = 1;
+            this.dgvListado.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListado_CellDoubleClick);
+            // 
+            // pnlBottom
+            // 
+            this.pnlBottom.Controls.Add(this.btnEliminar);
+            this.pnlBottom.Controls.Add(this.btnActivar);
+            this.pnlBottom.Controls.Add(this.btnDesactivar);
+            this.pnlBottom.Controls.Add(this.lblTotal);
+            this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlBottom.Location = new System.Drawing.Point(12, 607);
+            this.pnlBottom.Name = "pnlBottom";
+            this.pnlBottom.Size = new System.Drawing.Size(976, 40);
+            this.pnlBottom.TabIndex = 2;
             // 
             // btnEliminar
             // 
-            this.btnEliminar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnEliminar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(68)))), ((int)(((byte)(68)))));
             this.btnEliminar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnEliminar.FlatAppearance.BorderSize = 0;
             this.btnEliminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEliminar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnEliminar.ForeColor = System.Drawing.Color.White;
-            this.btnEliminar.Location = new System.Drawing.Point(15, 555);
+            this.btnEliminar.Location = new System.Drawing.Point(0, 5);
             this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(100, 32);
-            this.btnEliminar.TabIndex = 6;
+            this.btnEliminar.Size = new System.Drawing.Size(95, 30);
+            this.btnEliminar.TabIndex = 0;
             this.btnEliminar.Text = "🗑️ Eliminar";
             this.btnEliminar.UseVisualStyleBackColor = false;
             this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
             // 
+            // btnActivar
+            // 
+            this.btnActivar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(13)))), ((int)(((byte)(148)))), ((int)(((byte)(136)))));
+            this.btnActivar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnActivar.FlatAppearance.BorderSize = 0;
+            this.btnActivar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnActivar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnActivar.ForeColor = System.Drawing.Color.White;
+            this.btnActivar.Location = new System.Drawing.Point(102, 5);
+            this.btnActivar.Name = "btnActivar";
+            this.btnActivar.Size = new System.Drawing.Size(95, 30);
+            this.btnActivar.TabIndex = 1;
+            this.btnActivar.Text = "✔️ Activar";
+            this.btnActivar.UseVisualStyleBackColor = false;
+            this.btnActivar.Click += new System.EventHandler(this.btnActivar_Click);
+            // 
+            // btnDesactivar
+            // 
+            this.btnDesactivar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(115)))), ((int)(((byte)(22)))));
+            this.btnDesactivar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDesactivar.FlatAppearance.BorderSize = 0;
+            this.btnDesactivar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDesactivar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnDesactivar.ForeColor = System.Drawing.Color.White;
+            this.btnDesactivar.Location = new System.Drawing.Point(204, 5);
+            this.btnDesactivar.Name = "btnDesactivar";
+            this.btnDesactivar.Size = new System.Drawing.Size(105, 30);
+            this.btnDesactivar.TabIndex = 2;
+            this.btnDesactivar.Text = "⛔ Desactivar";
+            this.btnDesactivar.UseVisualStyleBackColor = false;
+            this.btnDesactivar.Click += new System.EventHandler(this.btnDesactivar_Click);
+            // 
             // lblTotal
             // 
-            this.lblTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTotal.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.lblTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.lblTotal.Location = new System.Drawing.Point(675, 560);
+            this.lblTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(175)))), ((int)(((byte)(200)))));
+            this.lblTotal.Location = new System.Drawing.Point(720, 8);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(250, 23);
-            this.lblTotal.TabIndex = 5;
+            this.lblTotal.TabIndex = 3;
             this.lblTotal.Text = "Total de registros: 0";
             this.lblTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // dgvListado
-            // 
-            this.dgvListado.AllowUserToAddRows = false;
-            this.dgvListado.AllowUserToDeleteRows = false;
-            this.dgvListado.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvListado.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvListado.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.dgvListado.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvListado.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvListado.Location = new System.Drawing.Point(15, 60);
-            this.dgvListado.Name = "dgvListado";
-            this.dgvListado.ReadOnly = true;
-            this.dgvListado.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvListado.Size = new System.Drawing.Size(910, 480);
-            this.dgvListado.TabIndex = 4;
-            this.dgvListado.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListado_CellDoubleClick);
-            // 
-            // btnNuevo
-            // 
-            this.btnNuevo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnNuevo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnNuevo.FlatAppearance.BorderSize = 0;
-            this.btnNuevo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNuevo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnNuevo.ForeColor = System.Drawing.Color.White;
-            this.btnNuevo.Location = new System.Drawing.Point(370, 14);
-            this.btnNuevo.Name = "btnNuevo";
-            this.btnNuevo.Size = new System.Drawing.Size(100, 32);
-            this.btnNuevo.TabIndex = 3;
-            this.btnNuevo.Text = "➕ Nuevo";
-            this.btnNuevo.UseVisualStyleBackColor = false;
-            this.btnNuevo.Click += new System.EventHandler(this.btnNuevo_Click);
-            // 
-            // btnBuscar
-            // 
-            this.btnBuscar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnBuscar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnBuscar.FlatAppearance.BorderSize = 0;
-            this.btnBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBuscar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnBuscar.ForeColor = System.Drawing.Color.White;
-            this.btnBuscar.Location = new System.Drawing.Point(265, 14);
-            this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(95, 32);
-            this.btnBuscar.TabIndex = 2;
-            this.btnBuscar.Text = "🔍 Buscar";
-            this.btnBuscar.UseVisualStyleBackColor = false;
-            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
-            // 
-            // txtBuscar
-            // 
-            this.txtBuscar.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtBuscar.Location = new System.Drawing.Point(75, 17);
-            this.txtBuscar.Name = "txtBuscar";
-            this.txtBuscar.Size = new System.Drawing.Size(180, 25);
-            this.txtBuscar.TabIndex = 1;
-            this.txtBuscar.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBuscar_KeyDown);
-            // 
-            // lblBuscar
-            // 
-            this.lblBuscar.AutoSize = true;
-            this.lblBuscar.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.lblBuscar.Location = new System.Drawing.Point(15, 22);
-            this.lblBuscar.Name = "lblBuscar";
-            this.lblBuscar.Size = new System.Drawing.Size(53, 17);
-            this.lblBuscar.TabIndex = 0;
-            this.lblBuscar.Text = "Buscar:";
-            // 
             // tabPageMantenimiento
             // 
-            this.tabPageMantenimiento.BackColor = System.Drawing.Color.White;
+            this.tabPageMantenimiento.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(22)))), ((int)(((byte)(38)))));
             this.tabPageMantenimiento.Controls.Add(this.btnCancelar);
             this.tabPageMantenimiento.Controls.Add(this.btnGuardar);
             this.tabPageMantenimiento.Controls.Add(this.chkHabilitado);
@@ -312,9 +333,10 @@ namespace Sistema.Presentacion
             this.tabPageMantenimiento.Controls.Add(this.lblCodigoBio);
             this.tabPageMantenimiento.Controls.Add(this.txtId);
             this.tabPageMantenimiento.Location = new System.Drawing.Point(4, 25);
+            this.tabPageMantenimiento.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageMantenimiento.Name = "tabPageMantenimiento";
             this.tabPageMantenimiento.Padding = new System.Windows.Forms.Padding(20);
-            this.tabPageMantenimiento.Size = new System.Drawing.Size(942, 601);
+            this.tabPageMantenimiento.Size = new System.Drawing.Size(1000, 659);
             this.tabPageMantenimiento.TabIndex = 1;
             this.tabPageMantenimiento.Text = "Mantenimiento";
             // 
@@ -602,6 +624,8 @@ namespace Sistema.Presentacion
         private System.Windows.Forms.TabControl tabPrincipal;
         private System.Windows.Forms.TabPage tabPageListado;
         private System.Windows.Forms.TabPage tabPageMantenimiento;
+        private System.Windows.Forms.Panel pnlTop;
+        private System.Windows.Forms.Panel pnlBottom;
         private System.Windows.Forms.TextBox txtBuscar;
         private System.Windows.Forms.Label lblBuscar;
         private System.Windows.Forms.Button btnBuscar;

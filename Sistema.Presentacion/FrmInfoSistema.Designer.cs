@@ -99,7 +99,7 @@ namespace Sistema.Presentacion
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(420, 22);
             this.lblVersion.TabIndex = 1;
-            this.lblVersion.Text = "Versión instalada: v1.0.2";
+            this.lblVersion.Text = "Versión instalada: v0.0.1";
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblEstadoActualizado
