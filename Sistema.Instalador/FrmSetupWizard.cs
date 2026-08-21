@@ -482,7 +482,39 @@ namespace Sistema.Instalador
                 if (!Directory.Exists(destFolder))
                     Directory.CreateDirectory(destFolder);
 
-                File.Copy(file, destFile, true);
+                int reintentos = 5;
+                while (reintentos > 0)
+                {
+                    try
+                    {
+                        if (File.Exists(destFile))
+                        {
+                            File.SetAttributes(destFile, FileAttributes.Normal);
+                        }
+                        File.Copy(file, destFile, true);
+                        break;
+                    }
+                    catch (IOException)
+                    {
+                        reintentos--;
+                        CerrarProcesoSilencioso("Actualizador");
+                        CerrarProcesoSilencioso("Sistema.Presentacion");
+                        CerrarProcesoSilencioso("Sistema.ServicioWindows");
+                        CerrarProcesoSilencioso("Desinstalador");
+                        System.Threading.Thread.Sleep(600);
+
+                        if (reintentos == 0)
+                        {
+                            try
+                            {
+                                File.Delete(destFile);
+                                File.Copy(file, destFile, true);
+                            }
+                            catch { }
+                        }
+                    }
+                }
+
                 contador++;
 
                 int pct = pctInicio + (int)((contador / (double)Math.Max(1, total)) * (pctFin - pctInicio));
