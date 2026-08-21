@@ -1,0 +1,40 @@
+## ==============================================================================
+## GITIGNORE: Visual Studio / .NET Framework - Hospital de El Progreso
+## ==============================================================================
+
+# Carpetas de compilación y binarios temporales
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+Generated_Code/
+
+# Archivos de usuario y configuración de Visual Studio
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.userprefs
+*.dbmdl
+*.jfm
+
+# Paquetes NuGet
+packages/
+*.nupkg
+*.nuget.props
+*.nuget.targets
+
+# Logs y backups temporales de auto-actualización
+Logs/
+_backup*/
+*.log
+*.tmp
+
+# Archivos de respaldo de base de datos grandes (usar Database_Script.sql para esquemas)
+*.backup
+*.bak
+
+# Preservar dependencias de SDK nativas necesarias para compilar y ejecutar
+!SDK/*.dll
+!Logotipos/*
+!FormatosReportes/*

@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{FF6CAA7C-9CDC-4851-B4A2-C9A6F7C0C94E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Sistema.Presentacion</RootNamespace>
+    <AssemblyName>Sistema.Presentacion</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Interop.zkemkeeper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SDK\Interop.zkemkeeper.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="FontAwesome.Sharp, Version=5.15.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FontAwesome.Sharp.5.15.3\lib\net48\FontAwesome.Sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FrmAsistencias.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAsistencias.Designer.cs">
+      <DependentUpon>FrmAsistencias.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmActualizacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmActualizacion.Designer.cs">
+      <DependentUpon>FrmActualizacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmBiometricos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmBiometricos.Designer.cs">
+      <DependentUpon>FrmBiometricos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmDashboard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDashboard.Designer.cs">
+      <DependentUpon>FrmDashboard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmEmpleados.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmEmpleados.Designer.cs">
+      <DependentUpon>FrmEmpleados.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmLogin.Designer.cs">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPrincipal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPrincipal.Designer.cs">
+      <DependentUpon>FrmPrincipal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmProgresoSync.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmProgresoSync.Designer.cs">
+      <DependentUpon>FrmProgresoSync.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSplash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSplash.Designer.cs">
+      <DependentUpon>FrmSplash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmUsuarios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmUsuarios.Designer.cs">
+      <DependentUpon>FrmUsuarios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="RJControls\Design\ButtonDesign.cs" />
+    <Compile Include="RJControls\Design\ControlStyle.cs" />
+    <Compile Include="RJControls\Design\DropdownMenuColors.cs" />
+    <Compile Include="RJControls\Design\DropdownMenuPosition.cs" />
+    <Compile Include="RJControls\Design\DropdownMenuRenderer.cs" />
+    <Compile Include="RJControls\Design\LabelStyle.cs" />
+    <Compile Include="RJControls\Design\TextBoxStyle.cs" />
+    <Compile Include="RJControls\Design\TextPosition.cs" />
+    <Compile Include="RJControls\RJButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJChart.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJCircularPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJComboBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJDataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJDatePicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJDragControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJDropdownMenu.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJImageColorOverlay.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJMenuButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJMenuIcon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJRadioButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJToggleButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJTrackBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJForms\Private\RJMessageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RJForms\Private\RJMessageForm.designer.cs">
+      <DependentUpon>RJMessageForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RJForms\RJBaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RJForms\RJChildForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RJForms\RJMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RJForms\RJMessageBox.cs" />
+    <Compile Include="RJForms\RJPrintForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RJForms\RJPrintForm.designer.cs">
+      <DependentUpon>RJPrintForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RJForms\RJSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RJForms\RJSettingsForm.Designer.cs">
+      <DependentUpon>RJSettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\RJColors.cs" />
+    <Compile Include="Settings\SettingsManager.cs" />
+    <Compile Include="Settings\UIAppearance.cs" />
+    <Compile Include="Settings\UIAppearanceSettings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>UIAppearanceSettings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\UIStyle.cs" />
+    <Compile Include="Settings\UITheme.cs" />
+    <Compile Include="Utils\ColorEditor.cs" />
+    <Compile Include="Utils\GridStyler.cs" />
+    <Compile Include="Utils\ReporteExporter.cs" />
+    <Compile Include="Utils\RoundedControl.cs" />
+    <Compile Include="Utils\ThemeManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RJForms\Private\RJMessageForm.resx">
+      <DependentUpon>RJMessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RJForms\RJPrintForm.resx">
+      <DependentUpon>RJPrintForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RJForms\RJSettingsForm.resx">
+      <DependentUpon>RJSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Settings\UIAppearanceSettings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>UIAppearanceSettings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="..\SDK\commpro.dll">
+      <Link>commpro.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\SDK\comms.dll">
+      <Link>comms.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\SDK\plcommpro.dll">
+      <Link>plcommpro.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\SDK\plcomms.dll">
+      <Link>plcomms.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\SDK\plrscagent.dll">
+      <Link>plrscagent.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\SDK\plrscomm.dll">
+      <Link>plrscomm.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\SDK\pltcpcomm.dll">
+      <Link>pltcpcomm.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\SDK\rscagent.dll">
+      <Link>rscagent.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\SDK\rscomm.dll">
+      <Link>rscomm.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\SDK\tcpcomm.dll">
+      <Link>tcpcomm.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\SDK\usbcomm.dll">
+      <Link>usbcomm.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\SDK\zkemkeeper.dll">
+      <Link>zkemkeeper.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\SDK\zkemsdk.dll">
+      <Link>zkemsdk.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sistema.Datos\Sistema.Datos.csproj">
+      <Project>{28fabf68-e1f9-4605-b89b-7b00be64009f}</Project>
+      <Name>Sistema.Datos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sistema.Entidades\Sistema.Entidades.csproj">
+      <Project>{b18837ae-261d-4d3b-bed0-1d9235be6d47}</Project>
+      <Name>Sistema.Entidades</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sistema.Negocio\Sistema.Negocio.csproj">
+      <Project>{72c59847-7a91-4dac-a6b0-3ad5d04eba2e}</Project>
+      <Name>Sistema.Negocio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sistema.Actualizador\Sistema.Actualizador.csproj">
+      <Project>{5a7b8c9d-1e2f-4a3b-9c8d-7e6f5a4b3c2d}</Project>
+      <Name>Sistema.Actualizador</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(SolutionDir)Sistema.Actualizador\bin\$(Platform)\$(Configuration)\Actualizador.exe" "$(TargetDir)Actualizador.exe"
+copy /Y "$(SolutionDir)Sistema.Actualizador\bin\$(Platform)\$(Configuration)\Actualizador.exe.config" "$(TargetDir)Actualizador.exe.config" 2&gt;nul</PostBuildEvent>
+  </PropertyGroup>
+</Project>
